@@ -1,0 +1,21 @@
+{
+  "name": "replace-companies-title",
+  "version": "1.0.0",
+  "description": "Приложение для Битрикс24 для замены некорректного названия Компании",
+  "main": "application.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "npm run test.jest",
+    "test.jest": "jest"
+  },
+  "keywords": [
+    "bitrix24"
+  ],
+  "author": "Vyacheslav",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "26.6.3"
+  }
+}

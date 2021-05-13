@@ -23,7 +23,7 @@ const validationMethod = method => {
   const availableMethods = [
     `crm.lead.add`,
     `crm.company.add`,
-    // `crm.company.get`,
+    `crm.company.list`,
   ]
   let errors = {};
 

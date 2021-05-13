@@ -28,23 +28,23 @@ async function crmCompanyGet(id) {
 };
 
 
-// Получаем список компаний по запрошенным данным
-async function crmCompanyList() {
-  const PARAMS = {
-    // order: { "DATE_CREATE": "ASC" },
-    filter: { "TITLE": "_" },
-    select: ["ID", "TITLE"]
-  };
+// TITLE "Онот_Лобыкина Ольга Александровна"
 
+/**
+ * Получаем список компаний по запрошенным данным
+ * @param {Object} params { order: { "DATE_CREATE": "ASC" }, filter: { "OPENED": "Y" }, select: ["ID", "TITLE"] }
+ * @returns {Array} 
+ */
+async function crmCompanyList(params) {
   try {
-    const result = await axios.post(`${HOOK_URL}/crm.company.list.json`, PARAMS);
-    console.log('res: ', result.data);
-    
-    console.log(`crm.company.list - return Ok!`);
+    let result = await axios.post(`${HOOK_URL}/crm.company.list.json`, params);
+    console.log(result);
+
+    return result.data.result;
 
   } catch (e) {
     // console.log('e: ', e);
-    console.log('e: ', e.response.data);
+    console.log('e: crmCompanyList', e.response.data);
   }
 };
 
@@ -77,10 +77,10 @@ async function getCompanyDataByOriginId(originId) {
 // Обновляем данные по компании
 async function crmCompanyAddOrUpdate(originId, fields) {
   try {
-    const result = await this.getCompanyDataByOriginId(originId);
-    console.log('result: ', result);
+    const result = await getCompanyDataByOriginId(originId);
+    console.log('result getCompanyDataByOriginId: ', result);
 
-    if (result) {
+    if (result.hasOwnProperty(`ID`)) {
       console.log(`update`);
       await axios.post(`${HOOK_URL}/crm.company.update.json`, {
         id: result.ID,
@@ -95,7 +95,7 @@ async function crmCompanyAddOrUpdate(originId, fields) {
     }
 
   } catch (e) {
-    console.log('e: ', e.response.data);
+    console.log('e: ', e.response?.data);
   }
 };
 

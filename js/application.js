@@ -755,7 +755,7 @@ class application {
     const curApp = this;
 
     BX24.callMethod('user.current', {}, (res) => {
-        curApp.currentUser = result.data().ID;
+        curApp.currentUser = res.data().ID;
         $(selector).html(res.data().NAME + ' ' + res.data().LAST_NAME);
       });
   }
