@@ -5,11 +5,11 @@ const mocksArr = require('./mocks.js');
 describe('checkAndCorrectTitle', () => {
   mocksArr.forEach((mock => {
     it(mock.TITLE, () => {
-      expect(checkAndCorrectTitle(mock).company.TITLE).toEqual(mock.RETURN);
-      expect(checkAndCorrectTitle(mock).valid).toEqual(mock.RESULT);
+      expect(checkAndCorrectTitle(mock, `_`, `_ `).company.TITLE).toEqual(mock.RETURN);
+      expect(checkAndCorrectTitle(mock, `_`, `_ `).valid).toEqual(mock.RESULT);
     })
   }))
 })
 
 
-// npm run test check-title.test.js
+// npm run test check-and-correct-title.test.js
