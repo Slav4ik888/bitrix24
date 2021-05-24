@@ -14,7 +14,7 @@
 <body>
   <div class="container">
     <div id="app" class="header">
-      Заполните условие поиска в названиях компании и введите значение для замены
+      Загрузите компании, а затем заполните условие для поиска в названиях компании и введите значение для замены.
     </div>
 
     <div class="error-container hide">
@@ -31,12 +31,15 @@
         <label for="findValue" class="label">
           Выбрать компании <span class="italic">(по условию)</span>
         </label>
-        <input type="text" class="input" id="findValue" />
-
-        <input class="button" type="submit" value="Найти компании">
-
+        <input class="input"  type="text"   id="findValue" />
+        <input class="button" type="submit" value="Найти компании" />
       </div>
-
+      <div class="helpText">
+        <ul>
+          <li>* - если затем, должна быть буква, (Сло* - будет искать "Сло" и букву)</li>
+          <li>^ - если затем должна идти цифра, (- ^ - будет искать: тире, пробел, а затем цифру)</li>
+        </ul>
+      </div>
       <!-- <div class="request-action">
       </div> -->
     </form>
@@ -55,9 +58,17 @@
     <div class="spinner-container"><div class="spinner hide"></div></div>
     
     <div class="company-result-container hide">
-      <h2>Список компаний:</h2>
-      <ul class="company-list-container">
-      </ul>
+      <div class="company-result-container-title">
+        <div class="result-container-title">Список компаний</div>
+        <div class="result-counter-title">
+          <div class="result-counter"></div>
+        </div>
+      </div>
+
+      <div class="company-list-wrap">
+        <ul class="company-list-container">
+        </ul>
+      </div>
     </div>
 
     
@@ -65,10 +76,10 @@
    
 
   </div>  
-  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <!-- <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
   
   <script type="text/javascript" src="application.js"></script>
-  <script type="text/javascript" src="methods/check-and-correct-title/index.js"></script>
+  <script type="text/javascript" src="methods/filtred-by-field-and-value/index.js"></script>
 
   <script src="//api.bitrix24.com/api/v1/"></script>
 
@@ -89,16 +100,17 @@
       const replaceValue = document.querySelector(`#replaceValue`);
 
       const companyResultContainer = document.querySelector(`.company-result-container`);
+      const resultCounter = document.querySelector(`.result-counter`);
       const companyListContainer = document.querySelector(`.company-list-container`);
 
       const spinner = document.querySelector(`.spinner`);
 
       const selectors = {
-        errorContainer,       errorBody, errorCloseIcon,
+        errorContainer,       errorBody,              errorCloseIcon,
         getAllCompaniesBtn,
         requiestFindForm,     findValue,
-        requiestReplaceForm, replaceValue,
-        companyListContainer, companyResultContainer,
+        requiestReplaceForm,  replaceValue,
+        companyListContainer, companyResultContainer, resultCounter,
         spinner,
       };
 
@@ -106,20 +118,16 @@
 
       requiestFindForm.addEventListener(`submit`, e => {
         e.preventDefault();
-        app.displayCompanyFiltred();
+        app.displayCompanyFiltred(findValue.value);
       });
 
       requiestReplaceForm.addEventListener(`submit`, e => {
         e.preventDefault();
-        console.log(replaceValue.value);
-        replaceValue.value = ``;
-        // checkAndCorrectTitle({ ID: "4491", TITLE: "СпецМос_ГорСтрой" },
-        //   findValue.value, replaceValue.value);
-
+        app.replaceCompaniesTitle(findValue.value, replaceValue.value);
       });
 
       if (development) {
-      app.start(selectors, development);
+        app.start(selectors, development);
 
       } else {
         BX24.init(function () {

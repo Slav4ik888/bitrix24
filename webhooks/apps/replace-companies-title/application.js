@@ -6,6 +6,9 @@ const objectLength = (arData) => {
   return result;
 };
 
+
+
+
 const mockCompanies = [
   { ID: "4491", TITLE: "_3423_ 213" },
   { ID: "4491", TITLE: "_ 3423_342" },
@@ -21,7 +24,6 @@ const mockCompanies = [
 
 
 // CLASS
-
 class application {
 
   constructor() {
@@ -134,7 +136,6 @@ class application {
     
     if (this.isAppLoadedKeys(`allCompanies`)) {
       console.log(`Компании уже загружены`);
-      // return callback(this);
     }
     
     if (this.development) {
@@ -176,28 +177,18 @@ class application {
     });
   }
 
-  
-  // Вывести список всех загруженных компаний
-  // displayAllCompanies(curApp) {
-  //   curApp.selectors.companyResultContainer.classList.remove(`hide`);
-    
-  //   this.displayListCompany(curApp, curApp.companies);
 
-  //   // Открываем блок с возможностью добавить условие для замены
-  //   curApp.selectors.requiestReplaceForm.classList.remove(`hide`);
-  // };
-
-
-  // Вывести список отобранных компаний
-  displayCompanyFiltred() {
+  /**
+   * Вывести список отобранных компаний
+   * @param {string} value - значение введённое пользователем
+   * @returns 
+   */
+  displayCompanyFiltred(value) {
     this.selectors.companyResultContainer.classList.remove(`hide`);
+    if (!value) return;
 
-    // const regexp = new RegExp(this.selectors.findValue.value, `i`);
-    // const regexp = /_\p{L}/iu; // После _ идёт только буква
-    // const regexp = /_\d/iu; // После _ идёт только цифрв
-    console.log('regexp: ', regexp);
-
-    this.filtredCompanies = this.filtredByFieldAndValue(this.companies, `TITLE`, regexp);
+    const regexp = createRegExpByValue(value); // Создаём рег. выражение
+    this.filtredCompanies = filtredByFieldAndRegexp(this.companies, `TITLE`, regexp);
 
     this.displayListCompany(this, this.filtredCompanies);
 
@@ -209,6 +200,7 @@ class application {
   // Вывести список компаний
   displayListCompany(curApp, list) {
     curApp.selectors.companyResultContainer.classList.remove(`hide`);
+    curApp.selectors.resultCounter.textContent = `Всего: ` + list.length; // Кол-во
     curApp.selectors.companyListContainer.textContent = ``;
 
     list.forEach((company) => {
@@ -220,20 +212,16 @@ class application {
   };
 
 
-  // Возвращает отфильтрованный массив по полю и значению
-  filtredByFieldAndValue = (arr, field, regexp) => arr.filter(item => regexp.test(item[field]));
-  
-  
-  // [+] Получить все компании и сохранить их в companies
-  // [+] Вывести все компании в виде списка
+  // Заменяем в отфильтрованных компаниях выбранный текст в TITLE
+  replaceCompaniesTitle(findValue, replaceValue) {
+    console.log(findValue, ` - заменить на: `, replaceValue);
+    if (!findValue || !replaceValue || !this.filtredCompanies.length) return;
 
-  // [-] Отфильтровать все компании по введённому ранее условию 
-  //      Глобальная ф-я фильтрации должна принимать фильтрующую функцию filtredByFieldAndValue, 
-  //      чтобы в дальнейшем можно было добавлять другие условия и параметры
-  //      а глобальная ф-я не меняется
-  // [-] Сохранить в значение filtredCompanies
+    // TODO: для всего массива
+    const res = checkAndCorrectTitle(this.filtredCompanies[0], findValue, replaceValue);
+    console.log('res: ', res);
 
-  // [-] Открыть поле для ввода условия для замены
+  };
   // [-] При нажатии "старт", сохранить в resultCompanies полученным значением
   // [-] Вывести все компании в виде списка
   // [-] Открыть кнопку сохранить

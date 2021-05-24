@@ -50,7 +50,7 @@ const correctTitle = (title, idx, replaceValue) => title.slice(0, idx)
 
 
 /**
- * 
+ * Возвращает объект ввиде результата и обновлённое значение
  * @param {Object} _companyData { ID: "4491", TITLE: "СпецМос_ГорСтрой" }
  * @param {String} findValue искомое значение
  * @param {String} replaceValue
@@ -70,6 +70,6 @@ const checkAndCorrectTitle = (_companyData, findValue, replaceValue) => {
 
 
 
-// module.exports = {
-//   checkAndCorrectTitle,
-// }
+module.exports = {
+  checkAndCorrectTitle,
+}
