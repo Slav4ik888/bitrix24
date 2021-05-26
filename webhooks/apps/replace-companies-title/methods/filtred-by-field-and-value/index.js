@@ -30,17 +30,45 @@ const filtredByFieldAndRegexp = (arr, field, regexp) => arr.filter(item => regex
  * @return {Object<valid: result.res, companyData> }
  */
 const checkAndCorrectField = (companyData, field, findValue, replaceValue) => {
+  const newCompany = Object.assign({}, companyData);
+
+  // Проверяем есть ли флаг * в заменяемом
+  const idxStarReplaceValue = replaceValue.indexOf(`*`);
+  if (idxStarReplaceValue !== -1) {
+    replaceValue = replaceValue.slice(0, idxStarReplaceValue);
+
+    // Теперь обрабатываем findValue
+    const idxStarFindValue = findValue.indexOf(`*`);
+    if (idxStarFindValue !== -1) {
+      findValue = findValue.slice(0, idxStarFindValue);
+    }
+  }
+
   const findValueRegExp = createRegExpByValue(findValue);
-  return companyData[field] = companyData[field].replace(findValueRegExp, replaceValue);
+  newCompany[field] = newCompany[field].replace(findValueRegExp, replaceValue);
+  return newCompany;
 };
 
 
 // Возвращает объект компании с изменённым TITLE
-const checkAndCorrectTitle = (companyData, findValueRegExp, replaceValue) => {
-  return checkAndCorrectField(companyData, `TITLE`, findValueRegExp, replaceValue);
+const checkAndCorrectTitle = (companyData, findValue, replaceValue) => {
+  return checkAndCorrectField(companyData, `TITLE`, findValue, replaceValue);
 };
 
+const checkAndCorrectTitles = (companiesData, findValue, replaceValue) => {
+  let corretedCompanies = [];
+  companiesData.forEach(company => {
+    const corrected = checkAndCorrectTitle(company, findValue, replaceValue);
+    console.log('corrected: ', corrected);
+    corretedCompanies.push(corrected);
+  });
+  return corretedCompanies;
+};
 
 module.exports = {
-  filtredByFieldAndRegexp, createRegExpByValue, checkAndCorrectTitle, checkAndCorrectField,
+  filtredByFieldAndRegexp,
+  createRegExpByValue,
+  checkAndCorrectTitle,
+  checkAndCorrectField,
+  checkAndCorrectTitles,
 };

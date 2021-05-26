@@ -6,6 +6,15 @@ const objectLength = (arData) => {
   return result;
 };
 
+// Возвращает длину batch (кол-во элементов в cmd во всех пачках)
+const batchLength = (batches) => {
+  let bLength = 0;
+  batches.forEach(batch => {
+    bLength += objectLength(batch.cmd);
+  });
+  return bLength;
+}
+
 
 
 
@@ -22,7 +31,6 @@ const mockCompanies = [
 ];
 
 
-
 // CLASS
 class application {
 
@@ -35,6 +43,11 @@ class application {
     // Отфильтрованные
     this.filtredCompanies = [];
 
+    // Компании с изменёнными данными;
+    this.replacedCompanies = [];
+    // Оставшееся кол-во компаний для обновления
+    this.lengthReplacedCompanies = 0;
+
     // Загруженные ключи
     this.appLoadedKeys = [];
 
@@ -44,7 +57,31 @@ class application {
     // Условие на которое менять полученное значение
     this.replaceValue = null;
 
+    // Mocks
   }
+
+
+  // ******************** //
+  //  MOCKS METHODS       //
+  // ******************** //
+
+
+  // Показываем процесс загрузки
+  mockShowLoadProcess = (curApp, item, i, maxLength) => {
+    setTimeout(() => {
+      const sum = +[item].length + +curApp.companies.length;
+      curApp.selectors.spinnerText.textContent = 'Загрузили ' + sum + ' ... ';
+      curApp.companies.push(item);
+
+      if (i === maxLength) curApp.displayAfterLoadedAllCompanies(curApp);
+    }, 200 * i);
+  };
+  
+  mockCreate210Companies() {
+    for (let i = 1; i < 211; i++) {
+      this.companies.push({ ID: `${449 + i}`, TITLE: "СпецКомпания - " + i })
+    }
+  };
 
 
   // ******************** //
@@ -86,38 +123,15 @@ class application {
     }
   }
 
-  spinner(selector, type) {
+  spinner(curApp, type) {
     if (type === `off`) {
-      selector.classList.add(`hide`);
-      selector.classList.remove(`circles-loader`);
+      curApp.selectors.spinnerContainer.classList.add(`hide`);
+      curApp.selectors.spinner.classList.remove(`circles-loader`);
+      curApp.selectors.spinnerText.textContent = ``;
     } else {
-      selector.classList.remove(`hide`);
-      selector.classList.add(`circles-loader`);
+      curApp.selectors.spinnerContainer.classList.remove(`hide`);
+      curApp.selectors.spinner.classList.add(`circles-loader`);
     }
-  }
-
-  createListItems() {
-    console.log('this.companies: ', this.companies);
-    let listItems = [];
-    for (let keyId in this.companies) {
-      listItems.push(`id=${this.companies[keyId].ID}&fields[TITLE]=${this.companies[keyId].TITLE}`);
-    }
-      
-    return listItems;
-  }
-
-  createBatchForCompanyUpdate(listItems) {
-    const method = `crm.company.update`;
-    let cmdObj = {};
-  
-    listItems.forEach((item, i) => cmdObj[method + i] = method + "?" + item);
-    console.log('cmdObj: ', cmdObj);
-
-    let obj = {
-      "halt": 0,
-      "cmd": cmdObj,
-    };
-    return obj;
   }
 
 
@@ -127,28 +141,38 @@ class application {
 
 
   // Получаем все компании и показываем их их
-  getAllCompanies() {
+  async getAllCompanies() {
     const curApp = this;
     const params = {
       filter: { "OPENED": "Y" },
       select: ["ID", "TITLE"]
     };
+    curApp.companies = [];
     
+
     if (this.isAppLoadedKeys(`allCompanies`)) {
       console.log(`Компании уже загружены`);
     }
     
     if (this.development) {
-      mockCompanies.forEach(item => this.companies.push(item));
-      curApp.displayListCompany(curApp, curApp.companies);
-      curApp.loadedKey(this, `allCompanies`);
-      curApp.selectors.requiestFindForm.classList.remove(`hide`);
-      curApp.selectors.requiestReplaceForm.classList.remove(`hide`);
+      this.mockCreate210Companies();
+      console.log('curApp.companies: ', curApp.companies);
+      
+      if (this.developmentShowLoadProcess) {
+        this.spinner(curApp);
+        let i = 0;
+        for await (let item of curApp.companies) {
+          i++;
+          this.mockShowLoadProcess(curApp, item, i, curApp.companies.length);
+        }
+      } else {
+        this.displayAfterLoadedAllCompanies(this);
+      }
+
       return;
     }
     
-    this.spinner(this.selectors.spinner);
-
+    this.spinner(this);
     // Получаем список всех компаний
     BX24.callMethod(`crm.company.list`, params, function (result) {
       if (result.error()) {
@@ -157,7 +181,9 @@ class application {
 
       } else {
         const data = result.data();
-        console.log('Загрузили ' + +data.length + +curApp.companies.length + ' ... ');
+        const sum = +data.length + +curApp.companies.length;
+        console.log('Загрузили ' + sum + ' ... ');
+        curApp.selectors.spinnerText.textContent = 'Загрузили ' + sum + ' ... ';
 
         curApp.companies.push(...data);
 
@@ -165,13 +191,7 @@ class application {
           result.next();
 
         } else { // Всё загрузили
-          curApp.selectors.getAllCompaniesBtn.value = `Загрузить повторно`;
-          curApp.selectors.requiestFindForm.classList.remove(`hide`);
-          curApp.selectors.requiestReplaceForm.classList.remove(`hide`);
-          curApp.loadedKey(curApp, `allCompanies`); // Отмечаем что все компании загружены и больше загружать не нужно
-          curApp.spinner(curApp.selectors.spinner, `off`);
-          curApp.displayListCompany(curApp, curApp.companies);
-          console.log(`Всего загружено компаний ${curApp.companies.length}`);
+          curApp.displayAfterLoadedAllCompanies(curApp);
         }
       }
     });
@@ -185,7 +205,9 @@ class application {
    */
   displayCompanyFiltred(value) {
     this.selectors.companyResultContainer.classList.remove(`hide`);
-    if (!value) return;
+    if (!value) {
+      this.displayListCompany(this, this.companies);
+    };
 
     const regexp = createRegExpByValue(value); // Создаём рег. выражение
     this.filtredCompanies = filtredByFieldAndRegexp(this.companies, `TITLE`, regexp);
@@ -217,57 +239,103 @@ class application {
     console.log(findValue, ` - заменить на: `, replaceValue);
     if (!findValue || !replaceValue || !this.filtredCompanies.length) return;
 
-    // TODO: для всего массива
-    const res = checkAndCorrectTitle(this.filtredCompanies[0], findValue, replaceValue);
-    console.log('res: ', res);
-
+    const res = checkAndCorrectTitles(this.filtredCompanies, findValue, replaceValue);
+    this.replacedCompanies = res || [];
+    console.log('this.replacedCompanies: ', this.replacedCompanies);
+    this.displayListCompany(this, this.replacedCompanies);
+    this.selectors.saveBtn.disabled = false;
   };
-  // [-] При нажатии "старт", сохранить в resultCompanies полученным значением
-  // [-] Вывести все компании в виде списка
-  // [-] Открыть кнопку сохранить
 
-  // [-] Обновить компании в Bitrix итоговыми значениям resultCompanies
+  // Сохраняем подготовленные компании в Битрикс
+  saveCompaniesToBitrix() {
+    console.log(`Будем сохранять в Битрикс...`, this.replacedCompanies);
+    // Подготавливаем пачку для отправки
+    const listItems = this.createListForCompaniesUpdate();
+    // console.log('listItems: ', listItems);
 
+    const batches = this.createBatchesForCompaniesUpdate(listItems);
+    console.log('Пачки для сохранения: ', batches);
+    console.log('Подготовленное кол-во компаний на сохранение: ', batchLength(batches));
 
-
-  arch() {
-    // Проверяем полученные компании, исправляем не корректные
-    // и сохраняем для последующей отправки
-    data.forEach((company) => {
-      const result = checkAndCorrectTitle(company);
-      if (!result.valid) curApp.companies[`company${result.company.ID}`] = result.company;
-    })
-    console.log(`Найдено всего компаний: `, objectLength(curApp.companies));
-
-    // Demo test
-    // const demo1 = checkAndCorrectTitle({ ID: "4567", TITLE: "Test_test" });
-    // console.log('demo1: ', demo1);
-    // const demo2 = checkAndCorrectTitle({ ID: "4568", TITLE: "Test_test" });
-    // console.log('demo2: ', demo2);
-    // curApp.companies[`demo1`] = demo1.company;
-    // curApp.companies[`demo2`] = demo2.company;
-
-    console.log('curApp.companies: ', curApp.companies);
-
-    // Если были компании с исправленными TITLE
-    if (objectLength(curApp.companies)) {
-      // Подготавливаем пачку для отправки
-
-      const listItems = curApp.createListItems();
-      console.log('listItems: ', listItems);
-
-      const params = curApp.createBatchForCompanyUpdate(listItems);
-      console.log('params: ', params);
-
-      // Отправляем для обновления
-      BX24.callMethod(`batch`, params, function (result) {
-        console.log(result);
-        curApp.companies = [];
-        console.log('curApp.companies: ', curApp.companies);
-      });
-                
+    if (!batchLength(batches)) {
+      console.log(`Нет объектов для сохранения...`);
+      return;
     }
+
+    const curApp = this;
+    let step = 0;
+
+    const batchCallback = function (result) {
+      console.log(result);
+      step++;
+
+      if (step === batches.length) return;
+
+      BX24.callMethod(`batch`, batches[step], batchCallback);
+
+    };
+
+    //  Отправка первой пачки для обновления
+    BX24.callMethod(`batch`, batches[step], batchCallback);
+  }
+
+
+  // Создаём строки списка компаний, подготовка для batch
+  createListForCompaniesUpdate() {
+    let listItems = [];
+    this.replacedCompanies.forEach(company => {
+      listItems.push(`id=${company.ID}&fields[TITLE]=${company.TITLE}`);
+    });
+      
+    return listItems;
+  };
+
+  // Создаём 1 batch для массового обновления компаний
+  createOneBatchForCompaniesUpdate(listItems) {
+    const method = `crm.company.update`;
+    let cmdObj = {};
   
+    listItems.forEach((item, i) => cmdObj[method + i] = method + "?" + item);
+    // console.log('cmdObj: ', cmdObj);
+
+    const params = {
+      "halt": 0,
+      "cmd": cmdObj,
+    };
+    return params;
+  };
+
+  createBatchesForCompaniesUpdate(listItems) {
+    let resultBatches = [];
+    let batches50 = [];
+    let lastMarker = 1;
+
+    const pushToResultBatches = (batches) => {
+      const params = this.createOneBatchForCompaniesUpdate(batches);
+      // console.log('params: ', params);
+      resultBatches.push(params);
+    };
+
+    listItems.forEach((requestStr, i) => {
+      // Делим по 50
+      let marker = Math.floor(i / 50);
+      // console.log('i -' + i + '; marker: ', marker);
+
+      if (marker < lastMarker) {
+        batches50.push(requestStr);
+
+
+      } else {
+        batches50.push(requestStr);
+        pushToResultBatches(batches50);
+        lastMarker++;
+        batches50 = [];
+      }
+    });
+
+    pushToResultBatches(batches50);
+    
+    return resultBatches;
   }
 
 
@@ -276,7 +344,16 @@ class application {
   // ******************** //
 
   
-  
+  // Вывести все элементы после загрузки всех компаний
+  displayAfterLoadedAllCompanies = (curApp) => {
+    curApp.selectors.getAllCompaniesBtn.value = `Загрузить повторно`;
+    curApp.selectors.requiestFindForm.classList.remove(`hide`);
+    // curApp.selectors.requiestReplaceForm.classList.remove(`hide`);
+    curApp.loadedKey(curApp, `allCompanies`); // Отмечаем что все компании загружены и больше загружать не нужно
+    curApp.spinner(curApp, `off`);
+    curApp.displayListCompany(curApp, curApp.companies);
+    console.log(`Всего загружено компаний ${curApp.companies.length}`);
+  };
   
   // Вывод сообщения об ошибке
   displayErrorMessage(message) {
@@ -305,8 +382,9 @@ class application {
   }
 
   // Инициализация приложения
-  start(selectors, mode) {
+  start(selectors, mode, showLoadProcess) {
     this.development = mode;
+    this.developmentShowLoadProcess = showLoadProcess;
     this.selectors = Object.assign({}, selectors);
     this.saveFrameWidth();
 
@@ -321,4 +399,4 @@ class application {
 // create our application
 app = new application();
 
-// git add . && git commit -am "рабочий процесс идёт..." && git push origin master
+// git add . && git commit -am "обновление данных пачками по 50 штук" && git push origin master

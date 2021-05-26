@@ -17,8 +17,13 @@ body {
 
 .spinner-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
+  height: 80px;
+  padding: 10px;
+  font-family: sans-serif;
+  font-size: 0.8rem;
 }
 
 .header {
@@ -80,6 +85,14 @@ body {
   /* flex-direction: column; */
   /* margin: 10px 0; */
   padding: 10px;
+}
+
+.replace-container {
+  background-color: #efefef;
+}
+.replace-input > input[type="text"] {
+  background-color: #e4e3e3;
+  border: 1px solid #d4d4d4;
 }
 
 .label {
