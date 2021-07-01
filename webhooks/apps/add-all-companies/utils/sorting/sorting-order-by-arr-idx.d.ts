@@ -1,0 +1,1 @@
+export function sortingOrderByArrIdx<T> (arr: Array<T>): Array<T>;

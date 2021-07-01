@@ -1,0 +1,1 @@
+export function isChangeInSortingOrder<T> (lastSort: Array<T>, newSort: Array<T>, field: string): Array<T>;
