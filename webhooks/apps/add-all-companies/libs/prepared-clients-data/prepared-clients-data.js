@@ -1,4 +1,29 @@
 import { prepareClient } from '../prepare-client/prepare-client.js';
+import { getOneFirstWord } from '../clean-address/clean-address.js';
+
+
+// Компании у которых org = null но в адресе присутствует данные слова
+const companyAddress = [
+  { f: /рим/i, r: `` },
+];
+
+
+/**
+ * Проверяет address на наличие в 1м слове находится ли он в списке исключений
+ * @param {Array<{f: `regexp`}>} regExpArr 
+ * @param {string} title 
+ * @returns 
+ */ 
+const findCurrentAddressInFirstWord = (regExpArr,  title) => {
+  let result = false;
+  const checkTitle = getOneFirstWord(title);
+
+  regExpArr.find((item) => {
+    if (item.f.test(checkTitle)) result = true;
+  });
+  return result;
+};
+
 
 /**
  * Создаём объекты для всех клиентов, для помещения их в Битрикс
@@ -17,7 +42,10 @@ export const prepareClientsData = (db, limit_clients) => {
 
       if (valid) {
         countValid++;
-        if (client.org) dbCompanies.push(client)
+
+        if (client.org || findCurrentAddressInFirstWord(companyAddress, client.TITLE)) {
+          dbCompanies.push(client)
+        }
         else dbPersons.push(client);
 
       } else {

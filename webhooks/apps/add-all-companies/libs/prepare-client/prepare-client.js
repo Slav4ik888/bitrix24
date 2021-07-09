@@ -1,5 +1,6 @@
 import { createCompanyTitleByAddressFio } from '../create-company-title-by-address-fio/create-company-title-by-address-fio.js';
 import { validateClient } from '../../validators/validate-client/validate-client.js';
+import { createComment } from '../create-comment/create-comment.js';
 import { Status } from '../../types/types-require.js';
 
 
@@ -13,7 +14,7 @@ export const prepareClient = (client) => {
   refactedClient.CONTRACT = client.title;
   refactedClient.PHONE = [{ VALUE: client?.phone || null }];
   refactedClient.org = client.org;
-
+  refactedClient.COMMENT = createComment(client);
 
   // Создаём название
   const result = createCompanyTitleByAddressFio(client.address, client.fio);

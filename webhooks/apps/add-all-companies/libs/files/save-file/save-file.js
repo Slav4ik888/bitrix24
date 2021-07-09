@@ -8,3 +8,4 @@ export function saveDataToJSONfile(PATH, data) {
 
 export const saveCompanies = (data) => saveDataToJSONfile(`./data/companies.json`, data);
 export const savePersons = (data) => saveDataToJSONfile(`./data/persons.json`, data);
+export const savePersonAddressList = (data) => saveDataToJSONfile(`./data/person-address-list.json`, data);
