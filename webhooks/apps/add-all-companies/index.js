@@ -14,29 +14,28 @@ import { getDB24WithoutTrashlist } from './libs/clean-db-from-bitrix24/clean-db-
 const LIMIT_CLIENTS = false;      // Лимит компаний для тестирования
 const NEED_SAVE_TO_FILE = false;  // Нужно ли сохранять в файл
 
-const DB_CLIENTS = './data/Result_06_28.json';
-const DB_FROM_BITRIX24 = './data/companies-from-bitrix24.json';
+// WORK DATA FROM BILLING
+const bg0 = './data/Result_06_28.json';
+const DATA_FROM_BG = getListFromJSON(bg0);
 
-// WORK DATA
-const DATA_CLIENTS = getListFromJSON(DB_CLIENTS);
-const DATA_FROM_BITRIX24 = getDB24WithoutTrashlist(getListFromJSON(DB_FROM_BITRIX24));
-
-// Отбираем только те что со знаком "_" и сортируем по TITLE
-const FILTRED_DATA_FROM_BITRIX24 = sortingArr(filterArrByFieldAndRegexp(DATA_FROM_BITRIX24, `TITLE`, /_/), `TITLE`);
-
-
-
+// WORK DATA FROM BITRIX24
+const bx0 = './data/companies-from-bitrix24.json';
+const bx1 = getListFromJSON(bx0);
+const bx2 = getDB24WithoutTrashlist(bx1);
+const bx3 = filterArrByFieldAndRegexp(bx2, `TITLE`, /_/); // Отбираем только те что со знаком "_"
+const DATA_FROM_BITRIX24 = sortingArr(bx3, `TITLE`); // Cортируем по TITLE
 
 
-const { counts, dbPersons, dbCompanies, dbInvalidClients } = prepareClientsData(DATA_CLIENTS, LIMIT_CLIENTS);
+
+const { counts, dbPersons, dbCompanies, dbInvalidClients } = prepareClientsData(DATA_FROM_BG, LIMIT_CLIENTS);
 
 if (NEED_SAVE_TO_FILE) {
   saveCompanies(dbCompanies);
   savePersons(dbPersons);
 };
 
-counts.dbBGL = DATA_CLIENTS.length;
-counts.dbBXL = FILTRED_DATA_FROM_BITRIX24.length;
+counts.dbBGL = DATA_FROM_BG.length;
+counts.dbBXL = DATA_FROM_BITRIX24.length;
 
 
 // BG Вывести список названий компаний dbCompanies
@@ -64,7 +63,7 @@ personsAddressList.forEach(item => console.log(item));
 
 // Совпадение по населённому пункту
 // Совпадение по ФИО
-const { DB_BX_UPDATED, DB_BX_REMAINDER } = findConsilience(FILTRED_DATA_FROM_BITRIX24, dbPersons);
+const { DB_BX_UPDATED, DB_BX_REMAINDER } = findConsilience(DATA_FROM_BITRIX24, dbPersons);
 console.log('DB_BX_REMAINDER: ', DB_BX_REMAINDER);
 counts.dbBXUpdatedL = DB_BX_UPDATED.length;
 counts.dbBXRemainderL = DB_BX_REMAINDER.length;
