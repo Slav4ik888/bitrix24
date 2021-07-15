@@ -1,10 +1,14 @@
 import { prepareClient } from '../prepare-client/prepare-client.js';
-import { getOneFirstWord } from '../clean-address/clean-address.js';
+import { getFirstWord } from '../get-word-by-number/get-word-by-number.js';
 
-
+// Список исключений которые нужно отловить по инфо в адресе
 // Компании у которых org = null но в адресе присутствует данные слова
 const companyAddress = [
   { f: /рим/i, r: `` },
+  { f: /Иркутск/i, r: `` },
+  { f: /Лермонтова/i, r: `` },
+  { f: /Разрез/i, r: `` },
+  
 ];
 
 
@@ -16,7 +20,7 @@ const companyAddress = [
  */ 
 const findCurrentAddressInFirstWord = (regExpArr,  title) => {
   let result = false;
-  const checkTitle = getOneFirstWord(title);
+  const checkTitle = getFirstWord(title);
 
   regExpArr.find((item) => {
     if (item.f.test(checkTitle)) result = true;
@@ -43,7 +47,12 @@ export const prepareClientsData = (db, limit_clients) => {
       if (valid) {
         countValid++;
 
-        if (client.org || findCurrentAddressInFirstWord(companyAddress, client.TITLE)) {
+        if (client.org) {
+          dbCompanies.push(client)
+        }
+        // Компании исключения, которые не нужно чтобы попали в ФЛ
+        else if (findCurrentAddressInFirstWord(companyAddress, client.TITLE)) {
+          // console.log(client.TITLE);
           dbCompanies.push(client)
         }
         else dbPersons.push(client);

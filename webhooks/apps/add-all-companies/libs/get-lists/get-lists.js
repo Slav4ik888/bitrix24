@@ -41,7 +41,24 @@ export const getSetCompanyTitleList = (arrClientData) => {
 
 
 /**
- * Возвращает set населённый пунктов
+ * Возвращает массив созданный из списка (псевдомассива), с добавлением id в виде key от списка
+ * @param {Object} list 
+ * @returns {Array}
+ */
+export const getArrayFromList = list => {
+  let arr = [];
+  for (let key in list) {
+    let obj = {};
+    obj = cloneObj(list[key]);
+    obj.id = key;
+    arr.push(obj);
+  }
+  return arr;
+};
+
+
+/**
+ * Возвращает массив уникальных населённый пунктов
  * @param {Array<ClientData>} arrClientData 
  * @returns {Set<string>}
  */
@@ -54,11 +71,5 @@ export const getSetAddressList = (arrClientData) => {
 
   const setList = getSetList(addressList);
 
-  // Переводим в массив
-  let resultList = [];
-  for (let value of setList) {
-    resultList.push(value);
-  }
-
-  return resultList.sort();
+  return getArrayFromList(setList).sort();
 };

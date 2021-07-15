@@ -11,7 +11,7 @@ export const prepareClient = (client) => {
   refactedClient.ORIGIN_ID = client.id;
   refactedClient.CREATED_BY_ID = 1;  // Кто создал 1 - Корзан Вячеслав
   refactedClient.ASSIGNED_BY_ID = 1; // Назначенный ответственный
-  refactedClient.CONTRACT = client.title;
+  refactedClient.CONTRACT = client.title; // Договор
   refactedClient.PHONE = [{ VALUE: client?.phone || null }];
   refactedClient.org = client.org;
   refactedClient.COMMENT = createComment(client);
