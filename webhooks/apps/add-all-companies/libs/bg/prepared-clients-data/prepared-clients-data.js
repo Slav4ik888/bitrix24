@@ -1,5 +1,5 @@
 import { prepareClient } from '../prepare-client/prepare-client.js';
-import { getFirstWord } from '../get-word-by-number/get-word-by-number.js';
+import { getFirstWord } from '../../get-word-by-number/get-word-by-number.js';
 
 // Список исключений которые нужно отловить по инфо в адресе
 // Компании у которых org = null но в адресе присутствует данные слова
@@ -8,7 +8,6 @@ const companyAddress = [
   { f: /Иркутск/i, r: `` },
   { f: /Лермонтова/i, r: `` },
   { f: /Разрез/i, r: `` },
-  
 ];
 
 
@@ -65,10 +64,11 @@ export const prepareClientsData = (db, limit_clients) => {
   });
 
   return {
-    counts: {
+    countersBG: {
       countAll, countValid, countInvalid,
       countPerson: dbPersons.length,
       countCompanies: dbCompanies.length,
+      dbBGL: db.length,
     },
     dbPersons,
     dbCompanies,
