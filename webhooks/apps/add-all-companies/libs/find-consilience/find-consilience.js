@@ -1,6 +1,6 @@
-import { getFirstWord, getSecondWord, getThirdWord } from '../get-word-by-number/get-word-by-number.js';
+import { getFirstWord, getSecondWord, getThirdWord, getFourthWord } from '../get-word-by-number/get-word-by-number.js';
 import { getSetList } from '../get-lists/get-lists.js';
-import { getArrWithoutItemByField } from '../../utils/arrays/get-arr-without-item-by-field/index.js';
+import { getItemFromArrByField } from '../../utils/arrays/get-item-from-arr-by-field/get-item-from-arr-by-field.js';
 
 
 // Очищаем слово от лишних символов и переводим в нижний регистр
@@ -14,7 +14,6 @@ export const checkConsilience = (a, b) => cleanText(a) === cleanText(b);
 
 // Совпадение по населённому пункту
 export const checkConsilienceAddress = (addressBX, addressBG) => checkConsilience(addressBX, addressBG);
-
 // console.log(checkConsilienceAddress(`Каменка_`, `Тыргетуй_`)); // false
 // console.log(checkConsilienceAddress(`Каменка_`, `Каменка_`)); // true
 
@@ -39,6 +38,8 @@ export const getRemainderArr = (newArr, oldArr, field) => {
   return remainderArr;
 };
 
+// Проверяет был ли сохранён дубликат
+const isDouble = (db, item) => getItemFromArrByField(db, `ID`, item);
 
 /**
  * Каждый адрес BX сравниваем с BG если находим, то сравниваем на совпадение фамилии
@@ -67,11 +68,20 @@ export const findConsilience = (DB_BX, DB_BG) => {
 
           // Проверяем совпадение по Имени
           if (checkConsilienceName(thirdNameBX, thirdNameBG)) {
-            // Обновляем нужными полями контакт из Битрикс24 для последующего обновления им в Битрикс24
-            const updatedItemBX = Object.assign({}, itemBX, itemBG);
+            const fourthNameBX = getFourthWord(itemBX.TITLE);
+            const fourthNameBG = getFourthWord(itemBG.TITLE);
 
-            DB_BX_UPDATED.push(updatedItemBX);
-            console.log(itemBX.TITLE, ` = `, itemBG.TITLE);
+            // Проверяем совпадение по Отчеству
+            if (checkConsilienceName(fourthNameBX, fourthNameBG)) {
+              // Обновляем нужными полями контакт из Битрикс24 для последующего обновления им в Битрикс24
+              const updatedItemBX = Object.assign({}, itemBX, itemBG);
+
+              // Проверяем есть ли такой же уже сохранённый контакт (полный однофамилец)
+              if (!isDouble(DB_BX_UPDATED, updatedItemBX)) {
+                DB_BX_UPDATED.push(updatedItemBX);
+                console.log(itemBX.TITLE, ` = `, itemBG.TITLE);
+              }
+            }
           }
         }
       }
@@ -80,7 +90,7 @@ export const findConsilience = (DB_BX, DB_BG) => {
     });
   });
 
-  const DB_BX_REMAINDER = getRemainderArr(DB_BX_UPDATED, DB_BX, `TITLE`);
+  const DB_BX_REMAINDER = getRemainderArr(DB_BX_UPDATED, DB_BX, `ID`);
 
   return { DB_BX_UPDATED, DB_BX_REMAINDER };
 };

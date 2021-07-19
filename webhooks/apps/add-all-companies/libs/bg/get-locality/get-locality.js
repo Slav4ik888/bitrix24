@@ -1,6 +1,6 @@
 import { getFirstWord } from '../../get-word-by-number/get-word-by-number.js';
 import { replaceStrByRegexpArr } from '../../replace-str-by-regexp-arr/replace-str-by-regexp-arr.js';
-import filter from './rules.js';
+import rules from './rules.js';
 
 
 // Очищаем address от с. д. и прочего, оставляет только название населённого пункта
@@ -8,7 +8,7 @@ export const getLocality = (address) => {
   let cleanedAddress = address ? address : ``;
 
   // Лишнее удаляем, на нужное меняем 
-  cleanedAddress = replaceStrByRegexpArr(cleanedAddress, filter);
+  cleanedAddress = replaceStrByRegexpArr(cleanedAddress, rules);
 
   // Удаляем то, что после первого слова
   cleanedAddress = getFirstWord(cleanedAddress);

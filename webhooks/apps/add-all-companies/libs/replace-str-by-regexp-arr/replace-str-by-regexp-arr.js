@@ -1,5 +1,5 @@
 /**
- * Возвращает str очищенную от наличия regexp выражения из replaceList[].f
+ * Возвращает str обновлённую выражением из replaceList[].f
  * @param {string} str 
  * @param {Array<{f:`regexp`, r:`replace-text`}>} replaceList 
  * @returns 

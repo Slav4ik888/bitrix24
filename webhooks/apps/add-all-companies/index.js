@@ -7,6 +7,8 @@ import { countersBG, dbPersons, dbCompanies, dbInvalidClients } from './controll
 
 // GET WORK DATA FROM BITRIX24
 import { DATA_FROM_BITRIX24 } from './controllers/bx24/index.js';
+import { sortingArr } from './utils/sorting/sorting-arr.js';
+import { getItemFromArrByField } from './utils/arrays/get-item-from-arr-by-field/get-item-from-arr-by-field.js';
 
 
 // SETTINGS
@@ -36,4 +38,4 @@ finalReport(counters);
 
 // TODO: показать те что не обновлены в Битрикс
 
-// git add . && git commit -m "16-07-2021" && git push origin master
+// git add . && git commit -m "19-07-2021" && git push origin master

@@ -1,8 +1,10 @@
 import { createCompanyTitleByAddressFio } from '../create-company-title-by-address-fio/create-company-title-by-address-fio.js';
+import { addLocaliy } from '../add-locality/add-locality.js';
 import { getLocality } from '../get-locality/get-locality.js';
 import { validateClient } from '../../../validators/validate-client/validate-client.js';
 import { createComment } from '../../create-comment/create-comment.js';
 import { Status } from '../../../types/types-require.js';
+
 
 
 /**
@@ -21,7 +23,10 @@ export const prepareClient = (client) => {
   preparedClient.COMMENT = createComment(client);
   preparedClient.org = client.org;
 
-  const locality = getLocality(client.address);
+  const locality = getLocality(
+    // Добавляем населённый пункт тем у кого отсутствует
+    addLocaliy(client));
+  
   preparedClient.LOCALITY = locality;
 
   // Создаём название
