@@ -1,7 +1,7 @@
 import { getListFromJSON } from '../../libs/files/get-list-from-json/get-list-from-json.js';
 
 // WORK DATA FROM BILLING
-const url = './data/Result_06_28.json';
+const url = './data/from/Result_06_28.json';
 export const DATA_FROM_BG = getListFromJSON(url);
 
 
@@ -12,7 +12,7 @@ import { getSortedCompanyTitleList, getSetCompanyTitleList, getSetAddressList } 
 // Лимит компаний для тестирования
 const LIMIT_CLIENTS = false;      
 
-export const { countersBG, dbPersons, dbCompanies, dbInvalidClients } = prepareClientsData(DATA_FROM_BG, LIMIT_CLIENTS);
+export const { countersBG, DB_BG_PERSONS, dbCompanies, dbInvalidClients } = prepareClientsData(DATA_FROM_BG, LIMIT_CLIENTS);
 
 // BG Вывести список названий компаний dbCompanies
 // const sortedCompanies = getSortedCompanyTitleList(dbCompanies);
@@ -21,17 +21,17 @@ export const { countersBG, dbPersons, dbCompanies, dbInvalidClients } = prepareC
 // const setCompanies = getSetCompanyTitleList(dbCompanies);
 // console.log('Companies: ', setCompanies);
 
-// BG Вывести список названий компаний dbPersons
-// const sortedPersons = getSortedCompanyTitleList(dbPersons);
+// BG Вывести список названий компаний DB_BG_PERSONS
+// const sortedPersons = getSortedCompanyTitleList(DB_BG_PERSONS);
 // savePersonAddressList(sortedPersons);
 // console.log('sortedPersons: ', sortedPersons);
 
 // BG Вывести уникальные
-// const setPersons = getSetCompanyTitleList(dbPersons);
+// const setPersons = getSetCompanyTitleList(DB_BG_PERSONS);
 // console.log('Persons: ', setPersons);
 
 // BG Только населённые пункты (отсортированные)
 const companiesAddressList = getSetAddressList(dbCompanies);
-const personsAddressList = getSetAddressList(dbPersons);
+const personsAddressList = getSetAddressList(DB_BG_PERSONS);
 personsAddressList.forEach(item => console.log(item));
 

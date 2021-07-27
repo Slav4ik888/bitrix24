@@ -4,7 +4,7 @@ import { getDB24WithReplacelist } from '../../libs/bx24/get-db24-with-replacelis
 import { filterArrByFieldAndRegexp } from '../../libs/filters/filter-arr-by-field-and-regexp/filter-arr-by-field-and-regexp.js';
 import { sortingArr } from '../../utils/sorting/sorting-arr.js';
 
-const bx0 = './data/companies-from-bitrix24.json';
+const bx0 = './data/from/companies-from-bitrix24.json';
 const bx1 = getListFromJSON(bx0);
 const bx2 = getDB24WithoutTrashlist(bx1);
 const bx3 = getDB24WithReplacelist(bx2);

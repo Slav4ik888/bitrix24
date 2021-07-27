@@ -1,0 +1,107 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Обновление существующих и загрузка новых компаний из BG-billing</title>
+
+    <link href="css/normalize.css" rel="stylesheet">
+    <link href="css/application.css" rel="stylesheet">
+    <link href="css/loaders.css" rel="stylesheet">
+    
+</head>
+<body>
+  <div class="container">
+    <div id="app" class="header">
+      Загрузите файл с подготовленными данными и выберите нужную операцию обработки.
+    </div>
+
+    <div class="error-container hide">
+      <span class="error-close-icon"></span>
+      <div class="error-body"></div>
+    </div>
+
+    <div class="nav-bar">
+      <input class="button file-upload" type="file" accept=".json" />
+      <input class="button new-companies-btn hide" type="button" accept=".json" value="Создать новые компании" />
+      <input class="button update-companies-btn hide" type="button" accept=".json" value="Обновить существующие" />
+    </div>
+
+    <div class="spinner-container hide">
+      <div class="spinner"></div>
+      <div class="spinner-text"></div>
+    </div>
+    
+    <div class="company-result-container hide">
+      <div class="company-result-container-title">
+        <div class="result-container-title">Список компаний</div>
+        <div class="result-counter-title">
+          <div class="result-counter"></div>
+        </div>
+        <input type="button" class="button saveBtn" disabled value="Сохранить в Битрикс" />
+      </div>
+
+      <div class="company-list-wrap">
+        <ul class="company-list-container">
+        </ul>
+      </div>
+    </div>
+   
+
+  </div>  
+  <!-- <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
+  
+  <script type="text/javascript" src="application.js"></script>
+
+  <script src="//api.bitrix24.com/api/v1/"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const development = true; // Режим разработки
+      const showLoadProcess = false; // Показывать пошаговую загрузку
+      
+      const fileUpload = document.querySelector(`.file-upload`);
+      const updateCompaniesBtn = document.querySelector(`.update-companies-btn`);
+      const newCompaniesBtn = document.querySelector(`.new-companies-btn`);
+
+      const spinnerContainer = document.querySelector(`.spinner-container`);
+      const spinner = document.querySelector(`.spinner`);
+      const spinnerText = document.querySelector(`.spinner-text`);
+
+      const errorContainer = document.querySelector(`.error-container`);
+      const errorCloseIcon = document.querySelector(`.error-close-icon`);
+      const errorBody = document.querySelector(`.error-body`);
+
+      const companyResultContainer = document.querySelector(`.company-result-container`);
+      const resultCounter = document.querySelector(`.result-counter`);
+      const companyListContainer = document.querySelector(`.company-list-container`);
+      const saveBtn = document.querySelector(`.saveBtn`);
+
+
+      const selectors = {
+        updateCompaniesBtn,   newCompaniesBtn,
+        spinnerContainer,     spinner,                spinnerText,
+        errorContainer,       errorBody,              errorCloseIcon,
+        companyListContainer, companyResultContainer, resultCounter, saveBtn,
+      };
+
+      fileUpload.addEventListener(`change`, (e) => app.readJSONAndProcessData(e));
+      updateCompaniesBtn.addEventListener(`click`, app.updateCompanies);
+      newCompaniesBtn.addEventListener(`click`, app.newCompanies);
+
+
+      if (development) {
+        app.start(selectors, development, showLoadProcess);
+
+      } else {
+        BX24.init(function () {
+          app.start(selectors, development);
+        });
+      }
+    });
+
+  </script>
+
+</body>
+</html>

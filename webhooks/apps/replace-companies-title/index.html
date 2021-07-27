@@ -69,6 +69,7 @@
           <div class="result-counter"></div>
         </div>
         <input type="button" class="button saveBtn" disabled value="Сохранить в Битрикс" />
+        <input type="button" class="button downloadCompBtn" disabled value="Сохранить в файл и скачать" />
       </div>
 
       <div class="company-list-wrap">
@@ -115,13 +116,15 @@
       const companyListContainer = document.querySelector(`.company-list-container`);
       const saveBtn = document.querySelector(`.saveBtn`);
 
+      const downloadCompBtn = document.querySelector(`.downloadCompBtn`);
+
       const selectors = {
         spinnerContainer,     spinner,                spinnerText,
         errorContainer,       errorBody,              errorCloseIcon,
         getAllCompaniesBtn,
         requiestFindForm,     findValue,
         requiestReplaceForm,  replaceValue,           replaceBtn,
-        companyListContainer, companyResultContainer, resultCounter, saveBtn,
+        companyListContainer, companyResultContainer, resultCounter, saveBtn, downloadCompBtn,
       };
 
       getAllCompaniesBtn.addEventListener(`click`, () => app.getAllCompanies());
@@ -135,7 +138,9 @@
         e.preventDefault();
         app.replaceCompaniesTitle(findValue.value, replaceValue.value);
       });
+
       saveBtn.addEventListener(`click`, () => app.saveCompaniesToBitrix());
+      downloadCompBtn.addEventListener(`click`, () => app.downloadCompanies());
 
       if (development) {
         app.start(selectors, development, showLoadProcess);

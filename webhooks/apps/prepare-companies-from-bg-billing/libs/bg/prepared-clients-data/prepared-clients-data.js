@@ -32,11 +32,11 @@ const findCurrentAddressInFirstWord = (regExpArr,  title) => {
  * Создаём объекты для всех клиентов, для помещения их в Битрикс
  * @param {array} db - исходные данные из BGbilling
  * @param {number} limit_clients 
- * @returns {counts: { countAll, countValid, countInvalid }, dbPersons, dbInvalidClients}
+ * @returns {counts: { countAll, countValid, countInvalid }, DB_BG_PERSONS, dbInvalidClients}
  */
 export const prepareClientsData = (db, limit_clients) => {
   let countAll = 0, countValid = 0, countInvalid = 0;
-  let dbPersons = [], dbCompanies = [], dbInvalidClients = [];
+  let DB_BG_PERSONS = [], dbCompanies = [], dbInvalidClients = [];
 
   db.forEach((clientBilling, i) => {
     if (i < limit_clients || !limit_clients) {
@@ -54,7 +54,7 @@ export const prepareClientsData = (db, limit_clients) => {
           // console.log(client.TITLE);
           dbCompanies.push(client)
         }
-        else dbPersons.push(client);
+        else DB_BG_PERSONS.push(client);
 
       } else {
         countInvalid++;
@@ -66,11 +66,11 @@ export const prepareClientsData = (db, limit_clients) => {
   return {
     countersBG: {
       countAll, countValid, countInvalid,
-      countPerson: dbPersons.length,
+      countPerson: DB_BG_PERSONS.length,
       countCompanies: dbCompanies.length,
       dbBGL: db.length,
     },
-    dbPersons,
+    DB_BG_PERSONS,
     dbCompanies,
     dbInvalidClients
    }

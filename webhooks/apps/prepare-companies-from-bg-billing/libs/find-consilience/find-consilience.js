@@ -21,7 +21,8 @@ export const checkConsilienceName = (nameBX, nameBG) => checkConsilience(nameBX,
 
 
 /**
- * Возвращаем массив оставшихся элементов в oldArr которых нет в newArr
+ * Возвращает массив оставшихся элементов в oldArr которых нет в newArr
+ * 
  * @param {Array} newArr 
  * @param {Array} oldArr 
  * @param {string} field поле по которому производить сравнение

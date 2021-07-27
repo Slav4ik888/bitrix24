@@ -176,7 +176,7 @@ class application {
     // Получаем список всех компаний
     BX24.callMethod(`crm.company.list`, params, function (result) {
       if (result.error()) {
-        curApp.displayErrorMessage(`К сожалению, произошла ошибка получения сделок. Попробуйте повторить отчет позже`);
+        curApp.displayErrorMessage(`К сожалению, произошла ошибка получения компаний. Попробуйте повторить позже`);
         console.error(result.error());
 
       } else {
@@ -323,9 +323,8 @@ class application {
 
       if (marker < lastMarker) {
         batches50.push(requestStr);
-
-
-      } else {
+      }
+      else {
         batches50.push(requestStr);
         pushToResultBatches(batches50);
         lastMarker++;
@@ -340,7 +339,20 @@ class application {
 
 
   // ******************** //
-  // DISPLAY METHODS      //
+  //   DOWNLOAD METHODS   //
+  // ******************** //
+
+  downloadCompanies() {
+    console.log(`DOWNLOAD START`);
+    console.log(`Загруженные компании:`, this.companies);
+
+    const JSONdata = JSON.stringify(this.companies);
+
+    this.selectors.companyListContainer.textContent = JSONdata;
+  }
+
+  // ******************** //
+  //    DISPLAY METHODS   //
   // ******************** //
 
   
@@ -348,6 +360,7 @@ class application {
   displayAfterLoadedAllCompanies = (curApp) => {
     curApp.selectors.getAllCompaniesBtn.value = `Загрузить повторно`;
     curApp.selectors.requiestFindForm.classList.remove(`hide`);
+    curApp.selectors.downloadCompBtn.disabled = false;
     // curApp.selectors.requiestReplaceForm.classList.remove(`hide`);
     curApp.loadedKey(curApp, `allCompanies`); // Отмечаем что все компании загружены и больше загружать не нужно
     curApp.spinner(curApp, `off`);
@@ -399,4 +412,4 @@ class application {
 // create our application
 app = new application();
 
-// git add . && git commit -am "обновление данных пачками по 50 штук" && git push origin master
+// git add . && git commit -m "filter & cleanAddress" && git push origin master
