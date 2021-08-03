@@ -79,7 +79,10 @@ export const findConsilience = (DB_BX, DB_BG) => {
 
               // Проверяем есть ли такой же уже сохранённый контакт (полный однофамилец)
               if (!isDouble(DB_BX_UPDATED, updatedItemBX)) {
-                DB_BX_UPDATED.push(updatedItemBX);
+                const res = Object.assign({}, updatedItemBX);
+                delete res.CREATED_BY_ID;  // Удаляем того, кто создавал
+                delete res.ASSIGNED_BY_ID; // Удаляем ответственного
+                DB_BX_UPDATED.push(res);
                 console.log(itemBX.TITLE, ` = `, itemBG.TITLE);
               }
             }

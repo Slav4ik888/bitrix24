@@ -25,11 +25,11 @@ const { crmCompanyList } = require('../controllers/methods');
 module.exports = async function getAllCompanies() {
   const params = {
     filter: { "OPENED": "Y" },
-    select: ["ID", "TITLE"]
+    select: ["ID", "TITLE", "ORIGIN_ID", "CREATED_BY_ID", "ASSIGNED_BY_ID"]
   };
 
   const result = await crmCompanyList(params);
-  console.log('res crmCompanyList: ', result.length);
+  console.log('res crmCompanyList: ', result);
 
   writeStream.write(result);
   // writeStream.write(JSON.stringify(result, null, 2));

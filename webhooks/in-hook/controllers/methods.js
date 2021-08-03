@@ -38,7 +38,7 @@ async function crmCompanyGet(id) {
 async function crmCompanyList(params) {
   try {
     let result = await axios.post(`${HOOK_URL}/crm.company.list.json`, params);
-    console.log(result);
+    console.log(result.data.result);
 
     return result.data.result;
 

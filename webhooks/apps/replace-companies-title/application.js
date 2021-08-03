@@ -13,7 +13,7 @@ const batchLength = (batches) => {
     bLength += objectLength(batch.cmd);
   });
   return bLength;
-}
+};
 
 
 
@@ -262,7 +262,7 @@ class application {
       return;
     }
 
-    const curApp = this;
+    // const curApp = this;
     let step = 0;
 
     const batchCallback = function (result) {
@@ -325,10 +325,10 @@ class application {
         batches50.push(requestStr);
       }
       else {
-        batches50.push(requestStr);
         pushToResultBatches(batches50);
         lastMarker++;
         batches50 = [];
+        batches50.push(requestStr); // Добавляем последний прочитанный (51)
       }
     });
 
@@ -347,7 +347,6 @@ class application {
     console.log(`Загруженные компании:`, this.companies);
 
     const JSONdata = JSON.stringify(this.companies);
-
     this.selectors.companyListContainer.textContent = JSONdata;
   }
 

@@ -22,9 +22,26 @@
       <div class="error-body"></div>
     </div>
 
+    <div class="article-sponsor">
+      <a href="#">Курс «Специалист в составлении должностных папок»</a>
+
+    </div>
+    <div class="column">
+
+      <div class="nav-bar">
+        <div class="box first">
+        </div>
+        <div class="box second">
+        </div>
+        <div class="box third">
+        </div>
+      </div>
+      <hr>
+    </div>
+
     <div class="nav-bar">
       <input class="button file-upload" type="file" accept=".json" />
-      <input class="button new-companies-btn hide" type="button" accept=".json" value="Создать новые компании" />
+      <input class="button create-new-companies-btn hide" type="button" accept=".json" value="Создать новые компании" />
       <input class="button update-companies-btn hide" type="button" accept=".json" value="Обновить существующие" />
     </div>
 
@@ -58,12 +75,12 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const development = true; // Режим разработки
+      const development = false; // Режим разработки
       const showLoadProcess = false; // Показывать пошаговую загрузку
       
       const fileUpload = document.querySelector(`.file-upload`);
       const updateCompaniesBtn = document.querySelector(`.update-companies-btn`);
-      const newCompaniesBtn = document.querySelector(`.new-companies-btn`);
+      const createNewCompaniesBtn = document.querySelector(`.create-new-companies-btn`);
 
       const spinnerContainer = document.querySelector(`.spinner-container`);
       const spinner = document.querySelector(`.spinner`);
@@ -80,21 +97,21 @@
 
 
       const selectors = {
-        updateCompaniesBtn,   newCompaniesBtn,
+        updateCompaniesBtn,   createNewCompaniesBtn,
         spinnerContainer,     spinner,                spinnerText,
         errorContainer,       errorBody,              errorCloseIcon,
         companyListContainer, companyResultContainer, resultCounter, saveBtn,
       };
 
       fileUpload.addEventListener(`change`, (e) => app.readJSONAndProcessData(e));
-      updateCompaniesBtn.addEventListener(`click`, app.updateCompanies);
-      newCompaniesBtn.addEventListener(`click`, app.newCompanies);
+      // updateCompaniesBtn.addEventListener(`click`, app.updateCompanies);
+      // newCompaniesBtn.addEventListener(`click`, app.newCompanies);
 
 
       if (development) {
         app.start(selectors, development, showLoadProcess);
-
-      } else {
+      } 
+      else {
         BX24.init(function () {
           app.start(selectors, development);
         });

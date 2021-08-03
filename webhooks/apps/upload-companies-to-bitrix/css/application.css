@@ -2,6 +2,10 @@ body {
   background-color: #f7f7f7; /* !important; */
 }
 
+li {
+  margin-bottom: 10px;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -43,6 +47,7 @@ body {
   box-shadow: 1px 1px 3px #ccc;
   background-color: #e9eccf;
 }
+
 .error-container {
   display: flex;
   align-items: center;

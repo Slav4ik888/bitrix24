@@ -1,8 +1,10 @@
 const getAllCompanies = require('./tasks/get-all-companies');
 
 // Получаем все компании и сохраняем их в файл
-getAllCompanies();
+// getAllCompanies();
 
+const {crmCompanyGet} = require('./controllers/methods');
+crmCompanyGet(4395);
 
 // const mocks = require('../mocks');
 // createOneBatch(`crm.company.add`, mocks.commands);
