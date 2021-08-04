@@ -1,0 +1,73 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Хуки для работы с Битрик24 Badcom</title>
+
+  <link href="css/normalize.css" rel="stylesheet">
+  <link href="css/application.css" rel="stylesheet">
+    
+  <script src="../index.js" defer type="module"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div id="app" class="paper header">
+      <div class="paper-title">Выберите нужный хук и запустите его</div>
+    </div>
+
+
+    <div class="paper nav-bar hide">
+    </div>
+
+    
+    <div class="error-container hide">
+      <div class="error-container-title">
+        <div class="error-title">Ошибка</div>
+        <div class="icon-button">
+          <span class="error-close-icon"></span>
+        </div>
+      </div>
+      <div class="error-content"></div>
+    </div>
+    
+    <div class="spinner-container hide">
+      <div class="spinner"></div>
+      <div class="spinner-text"></div>
+    </div>
+
+
+    <div class="paper hooks-container">
+      <div class="paper-title">Доступные хуки</div>
+        <li class="hook-item-container">
+          <div class="hook-item-content">
+            <input type="number" class="company-id" />
+            <input type="button" class="hook-submit" value="Запустить" />
+          </div>
+        </li>
+
+      <ul class="hooks-list">
+      </ul>
+    </div>
+
+    <div class="paper result-container hide">
+      <div class="result-container-title">
+        <div class="paper-title">Список</div>
+        <div class="counter-title">
+          <div class="result-counter"></div>
+        </div>
+      </div>
+
+      <div class="result-list-wrap">
+        <ul class="result-list-container">
+        </ul>
+      </div>
+    </div>
+   
+
+  </div>  
+  
+</body>
+</html>

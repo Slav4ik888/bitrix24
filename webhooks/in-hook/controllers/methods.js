@@ -1,31 +1,56 @@
-const axios = require('axios');
-const { HOOK_URL } = require('../consts');
-const mocks = require('../mocks');
+import { HOOK_URL, HOOK_QUERIES } from '../consts.js';
 
   
-async function createItemByFields(method, fields) {
-  try {
-    await axios.post(`${HOOK_URL}/${method}.json`, { fields });
-    console.log(method, `return Ok!`);
 
-  } catch (e) {
-    console.log('e: ', e.response.data);
+
+export async function crmCompanyAdd(fields) {
+  try {
+    const params = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      body: JSON.stringify({ fields }) // Подготовленные поля
+    };
+
+    const response = await fetch(`${HOOK_URL}/crm.company.add.json`, params);
+    const companyData = await response.json();
+    console.log('companyData: ', companyData.result); // Возвращает созданный ID
   }
-};
+  catch (e) {
+    console.log('e: ', e);
+    console.error(e);
+  }
+}
+
 
 // Получаем данные по компании по id
-async function crmCompanyGet(id) {
+export async function crmCompanyGet(id) {
   try {
-    const result = await axios.post(`${HOOK_URL}/crm.company.get.json`, { id }); // ORIGIN_ID: id
-    console.log('res: ', result.data);
-    
-    console.log(`crm.company.get - return Ok!`);
+    const params = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      body: JSON.stringify({ id }) // ORIGIN_ID: id
+    };
 
-  } catch (e) {
-    // console.log('e: ', e);
-    console.log('e: ', e.response.data);
+    const response = await fetch(`${HOOK_URL}/crm.company.get.json`, params);
+    const companyData = await response.json();
+    console.log('companyData: ', companyData);
   }
-};
+  catch (e) {
+    console.log('e: ', e);
+    console.error(e);
+  }
+}
+
+
+// async function createItemByFields(method, fields) {
+//   try {
+//     await axios.post(`${HOOK_URL}/${method}.json`, { fields });
+//     console.log(method, `return Ok!`);
+
+//   } catch (e) {
+//     console.log('e: ', e.response.data);
+//   }
+// }
 
 
 // TITLE "Онот_Лобыкина Ольга Александровна"
@@ -35,18 +60,18 @@ async function crmCompanyGet(id) {
  * @param {Object} params { order: { "DATE_CREATE": "ASC" }, filter: { "OPENED": "Y" }, select: ["ID", "TITLE"] }
  * @returns {Array} 
  */
-async function crmCompanyList(params) {
-  try {
-    let result = await axios.post(`${HOOK_URL}/crm.company.list.json`, params);
-    console.log(result.data.result);
+// async function crmCompanyList(params) {
+//   try {
+//     let result = await axios.post(`${HOOK_URL}/crm.company.list.json`, params);
+//     console.log(result.data.result);
 
-    return result.data.result;
+//     return result.data.result;
 
-  } catch (e) {
-    // console.log('e: ', e);
-    console.log('e: crmCompanyList', e.response.data);
-  }
-};
+//   } catch (e) {
+//     // console.log('e: ', e);
+//     console.log('e: crmCompanyList', e.response.data);
+//   }
+// }
 
 
 /**
@@ -54,70 +79,61 @@ async function crmCompanyList(params) {
  * @param {String} originId 
  * @returns {Object} 
  */
-async function getCompanyDataByOriginId(originId) {
-  try {
-    const result = await axios.post(`${HOOK_URL}/crm.company.list.json`, {
-      filter: { "ORIGIN_ID": originId },
-      select: [ "ID", "TITLE", "ORIGIN_ID", "CREATED_BY_ID" ],
-    });
+// async function getCompanyDataByOriginId(originId) {
+//   try {
+//     const result = await axios.post(`${HOOK_URL}/crm.company.list.json`, {
+//       filter: { "ORIGIN_ID": originId },
+//       select: [ "ID", "TITLE", "ORIGIN_ID", "CREATED_BY_ID" ],
+//     });
 
-    if (result.data.total) {
-      console.log(`crm.company.get - Компания с ORIGIN_ID ${originId} найдена!`);
-      return result.data.result[0];
-    }
+//     if (result.data.total) {
+//       console.log(`crm.company.get - Компания с ORIGIN_ID ${originId} найдена!`);
+//       return result.data.result[0];
+//     }
     
-    console.log(`crm.company.get - Компания с ORIGIN_ID ${originId} не найдена...`);
-    return {};
+//     console.log(`crm.company.get - Компания с ORIGIN_ID ${originId} не найдена...`);
+//     return {};
 
-  } catch (e) {
-    console.log('e: ', e.response.data);
-  }
-};
+//   } catch (e) {
+//     console.log('e: ', e.response.data);
+//   }
+// }
 
 // Обновляем данные по компании
-async function crmCompanyAddOrUpdate(originId, fields) {
-  try {
-    const result = await getCompanyDataByOriginId(originId);
-    console.log('result getCompanyDataByOriginId: ', result);
+// async function crmCompanyAddOrUpdate(originId, fields) {
+//   try {
+//     const result = await getCompanyDataByOriginId(originId);
+//     console.log('result getCompanyDataByOriginId: ', result);
 
-    if (result.hasOwnProperty(`ID`)) {
-      console.log(`update`);
-      await axios.post(`${HOOK_URL}/crm.company.update.json`, {
-        id: result.ID,
-        fields,
-        params: { "REGISTER_SONET_EVENT": "Y" }
-      });
-    } else {
-      console.log('mocks.fieldForCompany: ', mocks.fieldForCompany);
-      mocks.fieldForCompany.ORIGIN_ID = originId;
-      await axios.post(`${HOOK_URL}/crm.company.add.json`, { fields: mocks.fieldForCompany });
+//     if (result.hasOwnProperty(`ID`)) {
+//       console.log(`update`);
+//       await axios.post(`${HOOK_URL}/crm.company.update.json`, {
+//         id: result.ID,
+//         fields,
+//         params: { "REGISTER_SONET_EVENT": "Y" }
+//       });
+//     } else {
+//       console.log('mocks.fieldForCompany: ', mocks.fieldForCompany);
+//       mocks.fieldForCompany.ORIGIN_ID = originId;
+//       await axios.post(`${HOOK_URL}/crm.company.add.json`, { fields: mocks.fieldForCompany });
       
-    }
+//     }
 
-  } catch (e) {
-    console.log('e: ', e.response?.data);
-  }
-};
+//   } catch (e) {
+//     console.log('e: ', e.response?.data);
+//   }
+// }
 
 
-async function hookStr(method, str) {
-  try {
-    console.log(`${HOOK_URL}/${method}.json?` + str);
+// async function hookStr(method, str) {
+//   try {
+//     console.log(`${HOOK_URL}/${method}.json?` + str);
 
-    const res = await axios.get(`${HOOK_URL}/${method}.json?` + str);
+//     const res = await axios.get(`${HOOK_URL}/${method}.json?` + str);
 
-    console.log(method, `return Ok!`);
+//     console.log(method, `return Ok!`);
 
-  } catch (e) {
-    console.log('e: ', e.data());
-  }
-};
-  
-module.exports = {
-  createItemByFields,
-  crmCompanyGet,
-  crmCompanyList,
-  getCompanyDataByOriginId,
-  crmCompanyAddOrUpdate,
-  hookStr,
-}
+//   } catch (e) {
+//     console.log('e: ', e.data());
+//   }
+// }
