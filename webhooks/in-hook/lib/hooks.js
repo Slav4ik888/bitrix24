@@ -9,11 +9,11 @@ const createHookList = (hooks) => {
 
   for (let key in hooks) {
     if (Object.prototype.hasOwnProperty.call(hooks, key)) {
-      const { description: { title, query } } = hooks[key];
+      const { description: { title, query }, status } = hooks[key];
       const item = `
-        <li class="hook-item-container">
+        <li class="hook-item-container ${!status ? "disabled" : ""}">
 
-          <div class="hook-item-header">
+          <div class="hook-item-header ${!status ? "disabled" : ""}">
             <div class="hook-item-main">
               <div class="hook-title">${title}</div>
               <span>:</span>

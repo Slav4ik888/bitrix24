@@ -1,8 +1,12 @@
 import { HOOK_URL, HOOK_QUERIES } from '../consts.js';
 
-  
 
 
+/**
+ * Добавляет новую компанию
+ * @param {*} fields 
+ * @returns companyId | undefined;
+ */
 export async function crmCompanyAdd(fields) {
   try {
     const params = {
@@ -13,25 +17,86 @@ export async function crmCompanyAdd(fields) {
 
     const response = await fetch(`${HOOK_URL}/crm.company.add.json`, params);
     const companyData = await response.json();
-    console.log('companyData: ', companyData.result); // Возвращает созданный ID
+    console.log('crmCompanyAdd: ', companyData.result); // Возвращает созданный ID
+
+    return companyData.result;
   }
   catch (e) {
     console.log('e: ', e);
     console.error(e);
+    return;
   }
 }
 
 
-// Получаем данные по компании по id
+
+
+/**
+ * Получаем данные по компании по id
+ * 
+ * @param {number} id 
+ * @returns {companyData}
+ */
 export async function crmCompanyGet(id) {
   try {
     const params = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      body: JSON.stringify({ id }) // ORIGIN_ID: id
+      body: JSON.stringify({ id }) // company ID
     };
 
     const response = await fetch(`${HOOK_URL}/crm.company.get.json`, params);
+    const companyData = await response.json();
+
+    return companyData;
+  }
+  catch (e) { 
+    console.log('e: ', e);
+    console.error(e);
+    return;
+  }
+}
+
+/**
+ * Delete company by Id
+ * 
+ * @param {number} id 
+ * @returns {companyData}
+ */
+export async function crmCompanyDelete(id) {
+  try {
+    const params = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      body: JSON.stringify({ id }) // company ID
+    };
+
+    const response = await fetch(`${HOOK_URL}/crm.company.delete.json`, params);
+    const companyData = await response.json();
+    console.log('crmCompanyDelete: ', companyData.result);
+
+    return companyData.result;
+  }
+  catch (e) {
+    console.log('e: ', e);
+    console.error(e);
+    return;
+  }
+}
+
+
+
+// crm.company.contact.fields
+// Добавляет контакт к компании данные по компании по id
+export async function crmCompanyContactAdd(id, fields) {
+  try {
+    const params = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      body: JSON.stringify({ id, fields })
+    };
+
+    const response = await fetch(`${HOOK_URL}/crm.company.contact.add.json`, params);
     const companyData = await response.json();
     console.log('companyData: ', companyData);
   }

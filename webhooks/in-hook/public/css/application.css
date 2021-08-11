@@ -124,7 +124,7 @@ li {
   display: flex;
   flex-direction: column;
   background-color: #f0f8ff;
-  box-shadow: 1px 1px 3px #a9a9a9;
+  /* box-shadow: 1px 1px 3px #a9a9a9; */
   margin: 10px 0;
   border-radius: 3px;
 }
@@ -167,6 +167,7 @@ ul.hooks-list {
 .hook-item-container {
   display: flex;
   flex-direction: column;
+  box-shadow: 0px 1px 3px 0px #7b7b7b;
 }
 li.hook-item-container {
   transition: 0.5s;
@@ -185,12 +186,19 @@ li.hook-item-container {
   transition: 0.2s;
 }
 
+.disabled,
+.disabled:hover {
+  color: rgb(146, 146, 146) !important;
+  background-color: #e2e2e2;
+  cursor: default;
+}
+
 .hook-item-main {
   display: flex;
 }
 
 .hook-title {
-  min-width: 300px;
+  min-width: 350px;
   font-size: 1rem;
   font-weight: normal;
   font-style: italic;
@@ -200,15 +208,26 @@ li.hook-item-container {
 .hook-query {
   font-size: 1.1rem;
   font-weight: bold;
-  color: #000;
+  /* color: #000; */
   margin-left: 10px;
 }
 
 .hook-item-content {
+  display: flex;
+  flex-direction: column;
   min-height: 100px;
   background-color: #f7f7f7;
   padding: 20px;
   transition: 0.5s;
+}
+
+.input-block {
+  margin: 10px 0;
+}
+
+.label {
+  display: inline-block;
+  width: 150px;
 }
 
 .wrap-toogle-arrow {

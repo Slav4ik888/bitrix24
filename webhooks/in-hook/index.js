@@ -1,98 +1,51 @@
-// Methods
-import { crmCompanyGet, crmCompanyAdd } from './controllers/methods.js';
 // Functions
-import { displayListHTML } from './lib/display.js';
+import { displayListHTML } from './lib/display/display.js';
+import { createToggleHook } from './lib/create-toggle-hook/create-toggle-hook.js';
 // Consts
-import { HOOK_QUERIES, CONSTS } from './consts.js';
 import hookListArr from './lib/hooks.js';
 
 
-
-console.log(`INIT START`);
+// INITIALIZE
 const hooksContainer = document.querySelector(`.hooks-container`);
 const hooksList = document.querySelector(`.hooks-list`);
 
-const spinnerContainer = document.querySelector(`.spinner-container`);
-const spinner = document.querySelector(`.spinner`);
-const spinnerText = document.querySelector(`.spinner-text`);
+// const spinnerContainer = document.querySelector(`.spinner-container`);
+// const spinner = document.querySelector(`.spinner`);
+// const spinnerText = document.querySelector(`.spinner-text`);
 
-const errorContainer = document.querySelector(`.error-container`);
-const errorCloseIcon = document.querySelector(`.error-close-icon`);
-const errorContent = document.querySelector(`.error-content`);
+// const errorContainer = document.querySelector(`.error-container`);
+// const errorCloseIcon = document.querySelector(`.error-close-icon`);
+// const errorContent = document.querySelector(`.error-content`);
       
-const resultContainer = document.querySelector(`.result-container`);
-const resultCounter = document.querySelector(`.result-counter`);
-const resultListContainer = document.querySelector(`.result-list-container`);
+// const resultContainer = document.querySelector(`.result-container`);
+// const resultCounter = document.querySelector(`.result-counter`);
+// const resultListContainer = document.querySelector(`.result-list-container`);
 
 
 
-
+const toggleHook = createToggleHook();
+hooksList.addEventListener(`click`, (e) => toggleHook(e.target));
 
 
 
 // Выводим список хуков
 displayListHTML(hooksContainer, hooksList, hookListArr);
 
-const hookList = document.querySelectorAll(`.hook-toggle-icon`);
-console.log('hookList: ', hookList);
 
 
-// В данный момент открытый контент Хука
-let openedHookContent = null;
-
-const toggleHook = (e) => {
-  const target = e.target.closest(`li`);
-  if (!target) return;
-  if (!hooksList.contains(target)) return; // Если внутри li ещё будут вложенные ul.li то убеждаемся что именно наш target
-
-  const currentContent = target.querySelector(`.hook-item-content`);
-
-  if (openedHookContent) {
-    if (openedHookContent === currentContent) {
-      currentContent.classList.add(`hide`);
-      openedHookContent = null;
-    }
-    else {
-      openedHookContent.classList.add(`hide`);
-      currentContent.classList.remove(`hide`);
-      openedHookContent = currentContent;
-    }
-  }
-  else {
-    currentContent.classList.remove(`hide`);
-    openedHookContent = currentContent;
-  }
-};
-
-hooksList.addEventListener(`click`, toggleHook);
 
 
-const companyId = document.querySelector(`.company-id`);
-const hookSubmit = document.querySelector(`.hook-submit`);
 
-const getCompanyById = (e) => {
-  e.preventDefault();
-  const value = companyId.value;
-  console.log('value: ', value);
 
-  crmCompanyGet(value);
-};
 
-const addCompany = (e) => {
-  e.preventDefault();
-  
-  const fields = {
-    "TITLE": `Тест_ Иванько Семён Семёныч`, // Название компании
-    "ORIGIN_ID": "10",
-    "CREATED_BY_ID": CONSTS.CREATED_BY_ID, // Кто создал 1 - Корзан Вячеслав
-    "ASSIGNED_BY_ID": CONSTS.ASSIGNED_BY_ID, // Назначенный ответственный
-    "PHONE": [{ "VALUE": "+79501197000" }],
-    "EMAIL": [{ "VALUE": "korzan.va@mail.ru" }],
-  }
-  crmCompanyAdd(fields);
-}
 
-hookSubmit.addEventListener(`click`, getCompanyById);
+// const companyId = document.querySelector(`.company-id`);
+// const hookSubmit = document.querySelector(`.hook-submit`);
+
+// hookSubmit.addEventListener(`submit`, (e) => {
+//   e.preventDefault();
+//   submit();
+// });
 // crmCompanyGet(4395);
 
 
@@ -108,4 +61,4 @@ hookSubmit.addEventListener(`click`, getCompanyById);
 // Создаём новую компанию в Bitrix24 а если она есть то обновляем
 // crmCompanyAddOrUpdate("22", mocks.fieldsUpdate);
 
-// git add . && git commit -m "Начал писать приложение In-Hook" && git push origin master
+// git add . && git commit -m "Create start list of hooks, which works with BX24" && git push origin master
