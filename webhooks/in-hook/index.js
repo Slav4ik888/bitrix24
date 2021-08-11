@@ -61,4 +61,4 @@ displayListHTML(hooksContainer, hooksList, hookListArr);
 // Создаём новую компанию в Bitrix24 а если она есть то обновляем
 // crmCompanyAddOrUpdate("22", mocks.fieldsUpdate);
 
-// git add . && git commit -m "Create start list of hooks, which works with BX24" && git push origin master
+// git add . && git commit -m "small fix" && git push origin master

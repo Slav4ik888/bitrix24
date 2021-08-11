@@ -111,6 +111,16 @@ li {
 /* ==                 STYLES               == */
 /* ========================================== */
 
+input[type="submit"] {
+  background-color: #d3dee9;
+  border: 1px solid #5791cc;
+  border-radius: 4px;
+  padding: 5px 0;
+}
+input[type="submit"]:hover {
+  background-color: #bfcddb;
+}
+
 .italic {
   font-style: italic;
 }
