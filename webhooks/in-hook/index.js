@@ -5,6 +5,7 @@ import { createToggleHook } from './lib/create-toggle-hook/create-toggle-hook.js
 import hookListArr from './lib/hooks.js';
 
 
+
 // INITIALIZE
 const hooksContainer = document.querySelector(`.hooks-container`);
 const hooksList = document.querySelector(`.hooks-list`);
@@ -38,7 +39,6 @@ displayListHTML(hooksContainer, hooksList, hookListArr);
 
 
 
-
 // const companyId = document.querySelector(`.company-id`);
 // const hookSubmit = document.querySelector(`.hook-submit`);
 
@@ -61,4 +61,4 @@ displayListHTML(hooksContainer, hooksList, hookListArr);
 // Создаём новую компанию в Bitrix24 а если она есть то обновляем
 // crmCompanyAddOrUpdate("22", mocks.fieldsUpdate);
 
-// git add . && git commit -m "small fix" && git push origin master
+// git add . && git commit -m "start createNewCompanyWithContact" && git push origin master

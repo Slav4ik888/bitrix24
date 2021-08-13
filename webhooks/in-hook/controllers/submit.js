@@ -1,5 +1,8 @@
+import * as f from './forms.js';
 import * as com from './company.js';
 import * as cli from './contact.js';
+import { createNewCompanyWithContact } from '../lib/create-new-company-with-contact/create-new-company-with-contact.js';
+
 
 
 const checkResult = (data) => {
@@ -15,6 +18,18 @@ const checkResult = (data) => {
 // ID 5019 - Тест_ Иванько Семён Семёныч
 // ID 5049 - 
 
+const mockCompanyData = {
+  "ORIGIN_ID": 2,
+  "CREATED_BY_ID": 1,
+  "ASSIGNED_BY_ID": 1,
+  "CONTRACT": "1000047",
+  "PHONE": [{ "VALUE": null }],
+  "COMMENT": "id: 302, title: 1000047, phone: null, fio: null, org: null, sernum: null, issuer: null, issuedate: null, login: 1000047, address: null, ",
+  "org": null,
+  "LOCALITY": "",
+  "TITLE": "Балабаново_ Сидоров Глеб Михалыч",
+  "statusTitle": "valid"
+};
 
 
 /**
@@ -31,14 +46,20 @@ export default async function (e) {
   let result;
 
   switch (hookQuery) {
+    case 'test-create-company-with-contact':
+      result = await createNewCompanyWithContact(mockCompanyData); break;
+
+    case 'crm-company-list':
+      result = await f.companyList(form); break;
+    
     case 'crm-company-add':
-      result = await com.companyAdd(form); break;
+      result = await f.companyAdd(form); break;
     
     case 'crm-company-get':
-      result = await com.companyGet(form); break;
+      result = await f.companyGet(form); break;
     
     case 'crm-company-delete':
-      result = await com.companyDelete(form); break;
+      result = await f.companyDelete(form); break;
     
     case 'crm-company-contac-fields':
       result = await cli.companyContactFields(); break;

@@ -78,4 +78,4 @@ Thumbs.db
 
 # Вспомогательные файлы
 archive/
-webhooks/in-hook/consts.js
+webhooks/in-hook/consts/consts.js

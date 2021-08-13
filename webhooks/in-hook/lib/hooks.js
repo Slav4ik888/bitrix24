@@ -1,4 +1,4 @@
-import { HOOK_QUERIES } from '../consts.js';
+import HOOK_QUERIES from '../consts/hooks-queries.js';
 
 
 // Возвращает список хуков оформленных в items

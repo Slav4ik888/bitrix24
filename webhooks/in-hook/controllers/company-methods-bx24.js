@@ -1,4 +1,30 @@
-import { HOOK_URL, HOOK_QUERIES } from '../consts.js';
+import { HOOK_URL } from '../consts/consts.js';
+
+
+// Параметры для POST запроса
+const paramsPOST = {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json;charset=utf-8' },
+};
+
+
+
+/**
+ * Получаем список компаний по запрошенным данным
+ * @param {Object} params { order: { "DATE_CREATE": "ASC" }, filter: { "OPENED": "Y" }, select: ["ID", "TITLE"] }
+ * @returns {Array} 
+ */
+export async function crmCompanyList(params) {
+  try {
+    paramsPOST.body = JSON.stringify(params);
+
+    const response = await fetch(`${HOOK_URL}/crm.company.list.json`, paramsPOST);
+    const companyData = await response.json();
+
+    return companyData.result;
+  }
+  catch (e) { console.log('e: ', e); console.error(e); return }
+}
 
 
 
@@ -9,25 +35,15 @@ import { HOOK_URL, HOOK_QUERIES } from '../consts.js';
  */
 export async function crmCompanyAdd(fields) {
   try {
-    const params = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      body: JSON.stringify({ fields }) // Подготовленные поля
-    };
+    paramsPOST.body = JSON.stringify({ fields }); // Подготовленные поля
 
-    const response = await fetch(`${HOOK_URL}/crm.company.add.json`, params);
+    const response = await fetch(`${HOOK_URL}/crm.company.add.json`, paramsPOST);
     const companyData = await response.json();
-    console.log('crmCompanyAdd: ', companyData.result); // Возвращает созданный ID
 
-    return companyData.result;
+    return companyData.result; // Возвращает созданный ID
   }
-  catch (e) {
-    console.log('e: ', e);
-    console.error(e);
-    return;
-  }
+  catch (e) { console.log('e: ', e); console.error(e); return }
 }
-
 
 
 
@@ -39,23 +55,17 @@ export async function crmCompanyAdd(fields) {
  */
 export async function crmCompanyGet(id) {
   try {
-    const params = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      body: JSON.stringify({ id }) // company ID
-    };
+    paramsPOST.body = JSON.stringify({ id }); // company ID
 
-    const response = await fetch(`${HOOK_URL}/crm.company.get.json`, params);
+    const response = await fetch(`${HOOK_URL}/crm.company.get.json`, paramsPOST);
     const companyData = await response.json();
 
     return companyData;
   }
-  catch (e) { 
-    console.log('e: ', e);
-    console.error(e);
-    return;
-  }
+  catch (e) { console.log('e: ', e); console.error(e); return }
 }
+
+
 
 /**
  * Delete company by Id
@@ -65,23 +75,14 @@ export async function crmCompanyGet(id) {
  */
 export async function crmCompanyDelete(id) {
   try {
-    const params = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      body: JSON.stringify({ id }) // company ID
-    };
+    paramsPOST.body = JSON.stringify({ id }); // company ID
 
-    const response = await fetch(`${HOOK_URL}/crm.company.delete.json`, params);
+    const response = await fetch(`${HOOK_URL}/crm.company.delete.json`, paramsPOST);
     const companyData = await response.json();
-    console.log('crmCompanyDelete: ', companyData.result);
 
     return companyData.result;
   }
-  catch (e) {
-    console.log('e: ', e);
-    console.error(e);
-    return;
-  }
+  catch (e) { console.log('e: ', e); console.error(e); return }
 }
 
 
@@ -90,20 +91,13 @@ export async function crmCompanyDelete(id) {
 // Добавляет контакт к компании данные по компании по id
 export async function crmCompanyContactAdd(id, fields) {
   try {
-    const params = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      body: JSON.stringify({ id, fields })
-    };
+    paramsPOST.body = JSON.stringify({ id, fields });
 
-    const response = await fetch(`${HOOK_URL}/crm.company.contact.add.json`, params);
+    const response = await fetch(`${HOOK_URL}/crm.company.contact.add.json`, paramsPOST);
     const companyData = await response.json();
     console.log('companyData: ', companyData);
   }
-  catch (e) {
-    console.log('e: ', e);
-    console.error(e);
-  }
+  catch (e) { console.log('e: ', e); console.error(e); return}
 }
 
 
@@ -118,25 +112,7 @@ export async function crmCompanyContactAdd(id, fields) {
 // }
 
 
-// TITLE "Онот_Лобыкина Ольга Александровна"
 
-/**
- * Получаем список компаний по запрошенным данным
- * @param {Object} params { order: { "DATE_CREATE": "ASC" }, filter: { "OPENED": "Y" }, select: ["ID", "TITLE"] }
- * @returns {Array} 
- */
-// async function crmCompanyList(params) {
-//   try {
-//     let result = await axios.post(`${HOOK_URL}/crm.company.list.json`, params);
-//     console.log(result.data.result);
-
-//     return result.data.result;
-
-//   } catch (e) {
-//     // console.log('e: ', e);
-//     console.log('e: crmCompanyList', e.response.data);
-//   }
-// }
 
 
 /**

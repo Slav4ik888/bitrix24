@@ -1,4 +1,4 @@
-import { HOOK_URL, HOOK_QUERIES } from '../consts.js';
+import { HOOK_URL } from '../consts/consts.js';
 
 
 

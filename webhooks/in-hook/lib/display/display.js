@@ -3,6 +3,7 @@
 // ******************************************** //
 import { getHookByQuery } from '../get-hook-by-query/get-hook-by-query.js';
 
+
 // Выводит на экран элементы списка
 export const displayListHTML = (selectorContainer, selectorList, list) => {
   if (!list?.length) return null;

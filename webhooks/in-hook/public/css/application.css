@@ -112,8 +112,9 @@ li {
 /* ========================================== */
 
 input[type="submit"] {
-  background-color: #d3dee9;
-  border: 1px solid #5791cc;
+  background-color: #eff8fe;
+  border: 2px solid #bcd2e0;
+  box-shadow: 0 0 2px #8e8e8e;
   border-radius: 4px;
   padding: 5px 0;
 }
