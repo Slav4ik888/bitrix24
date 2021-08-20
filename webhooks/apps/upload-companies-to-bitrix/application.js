@@ -39,6 +39,7 @@ const makeReqStrFromAllFields = (company, method) => {
   return str;
 }
 
+
 // ******************************************** //
 //              BATCHES METHODS                 //
 // ******************************************** //
@@ -50,6 +51,26 @@ const batchLength = (batches) => {
   batches.forEach(batch => bLength += objectLength(batch.cmd));
   return bLength;
 };
+
+// Тест - проверить есть ли компания => создать компанию => создать контакт => соединить
+// const oneTestBatch = () => {
+
+//   BX24.callMethod('batch',
+//     {
+//       'halt': 0,
+//       'cmd': {
+//         'crm.company.list': 'crm.company.list?ORIGIN_ID=1000',
+//         'first_lead': 'crm.lead.add?fields[TITLE]=Test Title',
+//         'user_by_name': 'user.search?NAME=Test2',
+//         'user_lead': 'crm.lead.add?fields[TITLE]=Test Assigned&fields[ASSIGNED_BY_ID]=$result[user_by_name][0][ID]',
+//       }
+//     },
+//     function(result)
+//     {
+//         console.log(result);
+//     }
+//   );
+// }
 
 
 /**
@@ -201,7 +222,7 @@ class Application {
       this.displayListCompany(this, this.companies);
 
       // Открываем кнопки
-      this.selectors.updateCompaniesBtn.classList.remove(`hide`);
+      // this.selectors.updateCompaniesBtn.classList.remove(`hide`);
       this.selectors.createNewCompaniesBtn.classList.remove(`hide`);
     }
 
@@ -249,8 +270,11 @@ class Application {
     // Выводим список подготовленных requests
     this.displayListRequests(batches);
     
-    // Запускаем отправку подготовленных batches в BX24
-    this.startBatchsToBX24(batches);
+    this.selectors.saveBtn.disabled = false;
+    this.selectors.saveBtn.addEventListener(`click`, () => {
+      // console.log('Запускаем отправку подготовленных batches в BX24');
+      // this.startBatchsToBX24(batches);
+    });
   }
 
 
@@ -317,7 +341,8 @@ class Application {
     this.developmentShowLoadProcess = showLoadProcess;
     this.selectors = Object.assign({}, selectors);
 
-    selectors.updateCompaniesBtn.addEventListener(`click`, () => this.startProcessCompanies(METHOD.UPDATE));
+    // Обновление пока заморозил так как создание происходит через создание компании => контакта => связывание обоих
+    // selectors.updateCompaniesBtn.addEventListener(`click`, () => this.startProcessCompanies(METHOD.UPDATE));
     selectors.createNewCompaniesBtn.addEventListener(`click`, () => this.startProcessCompanies(METHOD.ADD));
     
     if (!this.development) {
@@ -330,3 +355,13 @@ const app = new Application();
 
 // git add . && git commit -m "refact upload-companies application" && git push origin master
 
+// click => this.startProcessCompanies(METHOD.ADD)
+//   const batches = prepareBatches(this.companies, method)
+//     const listItems = createListForCompanies(companies, method);
+//       listItems.push(makeReqStrFromAllFields(company, method));
+
+//     const batches = createBatches(listItems, method);
+// 
+// 
+// => startBatchsToBX24(batches)
+// => BX24.callMethod(`batch`, batches[step], batchCallback)

@@ -1,11 +1,9 @@
 // Methods bx24
 import * as m from './company-methods-bx24.js';
-// Consts
-import { CONSTS } from '../consts/consts.js';
 
 
 // Запрашиваем список компаний по полю ORIGIN_ID
-export const companyList = async (fields) => m.crmCompanyList(fields);
+export const companyList = (fields) => m.crmCompanyList(fields);
 
 
 
@@ -18,29 +16,24 @@ export const companyList = async (fields) => m.crmCompanyList(fields);
 //   "EMAIL": [{ "VALUE": "korzan.va@mail.ru" }],
 // };
   
-export const companyAdd = async (fields) => m.crmCompanyAdd(fields);
+export const companyAdd = (fields) => m.crmCompanyAdd(fields);
 
 
 // Получаем данные компании
-export const companyGet = async (companyId) => m.crmCompanyGet(companyId);
+export const companyGet = (companyId) => m.crmCompanyGet(companyId);
 
 
 // Delete company by Id
-export const companyDelete = async (companyId) => m.crmCompanyDelete(companyId);
+export const companyDelete = (companyId) => m.crmCompanyDelete(companyId);
 
+
+/**
+ * Возвращает набор полей для контакта компании
+ */
+export const companyContactFields = () => m.crmCompanyContactFields();
+// if (res) console.log(`Существующие поля контакта: `, res);
+// else console.log(`Ошибка при получении полей контакта: `, fields.TITLE);
 
 
 // Добавляем контакт к компании
-// export const companyContactAdd = async (contact) => {
-//   // e.preventDefault();
-  
-//   const fields = {
-//     "CONTACT_ID": contact.id, // - идентификатор контакта (обязательное поле)
-//     "IS_PRIMARY": true, // - флаг первичного контакта
-//   };
-
-//   const res = await m.crmCompanyContactAdd(contact.id, fields);
-
-//   if (res) console.log(`Контакт ${contact.id} добавлен к компании: `, res);
-//   else console.log(`Ошибка при создании компании: `, fields.TITLE);
-// };
+export const companyContactAdd = (companyId, fields) => m.crmCompanyContactAdd(companyId, fields);

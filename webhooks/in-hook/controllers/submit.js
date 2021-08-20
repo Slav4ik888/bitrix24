@@ -2,6 +2,7 @@ import * as f from './forms.js';
 import * as com from './company.js';
 import * as cli from './contact.js';
 import { createNewCompanyWithContact } from '../lib/create-new-company-with-contact/create-new-company-with-contact.js';
+import { createGroupCopmaniesWithContacts } from '../lib/create-group-companies-with-contacts/create-group-companies-with-contacts.js';
 
 
 
@@ -16,20 +17,31 @@ const checkResult = (data) => {
 
 // Созданные:
 // ID 5019 - Тест_ Иванько Семён Семёныч
-// ID 5049 - 
+// ID 5061 - Чемодариха_ Копыстинский Петр Михайлович
+  // 7793
 
 const mockCompanyData = {
-  "ORIGIN_ID": 2,
+  "ORIGIN_ID": 1102,
   "CREATED_BY_ID": 1,
   "ASSIGNED_BY_ID": 1,
-  "CONTRACT": "1000047",
-  "PHONE": [{ "VALUE": null }],
-  "COMMENT": "id: 302, title: 1000047, phone: null, fio: null, org: null, sernum: null, issuer: null, issuedate: null, login: 1000047, address: null, ",
+  "CONTRACT": "9021744185",
+  "COMMENT": "id: 1014, title: 9021744185, phone: null, fio: Копыстинский Петр Михайлович, org: null, sernum: null, issuer: null, issuedate: null, login: 10010082, address: Чемодариха, ",
   "org": null,
-  "LOCALITY": "",
-  "TITLE": "Балабаново_ Сидоров Глеб Михалыч",
-  "statusTitle": "valid"
+  "LOCALITY": "TEST",
+  "TITLE": "Test_ Копыстинский Петр Михайлович",
+  "statusTitle": "valid",
+
+  "CONTACT": {
+    "ADDRESS": "Чемодариха",
+    "NAME": "Test",
+    "LAST_NAME": "Копыстинский",
+    "SECOND_NAME": "Михайлович",
+    "PHONE": [{ "VALUE": "" }],
+    "CREATED_BY_ID": 1,
+    "ASSIGNED_BY_ID": 1
+  }
 };
+
 
 
 /**
@@ -49,6 +61,13 @@ export default async function (e) {
     case 'test-create-company-with-contact':
       result = await createNewCompanyWithContact(mockCompanyData); break;
 
+    case 'create-group-companies-with-contacts':
+      result = await createGroupCopmaniesWithContacts(); break;
+    // COMPANY
+
+    case 'crm-company-contact-fields':
+      result = await com.companyContactFields(); break;
+    
     case 'crm-company-list':
       result = await f.companyList(form); break;
     
@@ -58,11 +77,26 @@ export default async function (e) {
     case 'crm-company-get':
       result = await f.companyGet(form); break;
     
+    case 'crm-company-contact-add':
+      result = await f.companyContactAdd(form); break;
+    
     case 'crm-company-delete':
       result = await f.companyDelete(form); break;
     
-    case 'crm-company-contac-fields':
-      result = await cli.companyContactFields(); break;
+    // CONTACTS
+    
+    case 'crm-contact-fields':
+      result = await cli.contactFields(); break;
+    
+    case 'crm-contact-get':
+      result = await f.contactGet(form); break;
+    
+    case 'crm-contact-add':
+      result = await f.contactAdd(form); break;
+    
+    case 'crm-contact-delete':
+      result = await f.contactDelete(form); break;
+    
     
   }
 

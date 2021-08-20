@@ -1,8 +1,8 @@
-import HOOK_QUERIES from '../consts/hooks-queries.js';
+import HOOK_QUERIES from '../../consts/hooks-queries.js';
 
 
 // Возвращает список хуков оформленных в items
-const createHookList = (hooks) => {
+const createHooksList = (hooks) => {
   let list = [];
 
   let id = 1;
@@ -40,4 +40,4 @@ const createHookList = (hooks) => {
   return list;
 };
 
-export default createHookList(HOOK_QUERIES);
+export default createHooksList(HOOK_QUERIES);

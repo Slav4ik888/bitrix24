@@ -6,6 +6,10 @@ li {
   margin-bottom: 10px;
 }
 
+input {
+  margin: 10px 0;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -112,14 +116,15 @@ li {
 /* ========================================== */
 
 input[type="submit"] {
+  width: 200px;
   background-color: #eff8fe;
   border: 2px solid #bcd2e0;
-  box-shadow: 0 0 2px #8e8e8e;
+  box-shadow: 1px 1px 2px #8e8e8e;
   border-radius: 4px;
   padding: 5px 0;
 }
 input[type="submit"]:hover {
-  background-color: #bfcddb;
+  background-color: #eaf4fb;
 }
 
 .italic {
@@ -229,7 +234,8 @@ li.hook-item-container {
   min-height: 100px;
   background-color: #f7f7f7;
   padding: 20px;
-  transition: 0.5s;
+  transition: max-height ease-in-out 0.3s, opacity ease-in-out 0.3s;
+  /* transition: 0.5s; */
 }
 
 .input-block {
@@ -250,6 +256,9 @@ li.hook-item-container {
   border-radius: 50%;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
+
+  transform: rotate(0deg);
+  transition: all ease-in-out 0.3s;
 
   color: #fff;
   width: 30px;
@@ -278,7 +287,4 @@ li.hook-item-container {
 /* Result container */
 .result-container {
   display: flex;
-}
-
-.container-title {
 }

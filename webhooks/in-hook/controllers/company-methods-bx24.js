@@ -1,11 +1,4 @@
-import { HOOK_URL } from '../consts/consts.js';
-
-
-// Параметры для POST запроса
-const paramsPOST = {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json;charset=utf-8' },
-};
+import { HOOK_URL, paramsPOST } from '../consts/consts.js';
 
 
 
@@ -95,7 +88,8 @@ export async function crmCompanyContactAdd(id, fields) {
 
     const response = await fetch(`${HOOK_URL}/crm.company.contact.add.json`, paramsPOST);
     const companyData = await response.json();
-    console.log('companyData: ', companyData);
+    
+    return companyData;
   }
   catch (e) { console.log('e: ', e); console.error(e); return}
 }
@@ -112,7 +106,21 @@ export async function crmCompanyContactAdd(id, fields) {
 // }
 
 
+/**
+ * Получает существующий набор полей для контакта
+ * 
+ * @returns contactFields
+ */
+export async function crmCompanyContactFields() {
+  try {
+    const response = await fetch(`${HOOK_URL}/crm.company.contact.fields.json`);
+    const data = await response.json();
+    // console.log('crmCompanyContactFields: ', data.result); // Возвращает созданный ID
 
+    return data.result;
+  }
+  catch (e) { console.log('e: ', e); console.error(e); return; }
+}
 
 
 /**

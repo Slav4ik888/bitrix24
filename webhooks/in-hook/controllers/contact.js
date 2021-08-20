@@ -2,28 +2,29 @@
 import * as m from './contact-methods-bx24.js';
 
 
+
 /**
- * Возвращает набор полей для контакта компании
+ * Возвращает набор полей для контакта
  */
-export const companyContactFields = async () => await m.crmCompanyContactFields();
-// if (res) console.log(`Существующие поля контакта: `, res);
-// else console.log(`Ошибка при получении полей контакта: `, fields.TITLE);
+export const contactFields = () => m.crmContactFields();
 
 
 
-export const contactAdd = async (e) => {
-  e.preventDefault();
-  
-  const fields = {
-    "TITLE": `Симонько Ирина Семёновна`, // Название компании
-    "ORIGIN_ID": "12",
-    "CREATED_BY_ID": CONSTS.CREATED_BY_ID, // Кто создал 1 - Корзан Вячеслав
-    "ASSIGNED_BY_ID": CONSTS.ASSIGNED_BY_ID, // Назначенный ответственный
-    "PHONE": [{ "VALUE": "+79501197000" }],
-    "EMAIL": [{ "VALUE": "korzan.va@mail.ru" }],
-  }
-  const res = await m.crmContactAdd(fields);
+// Получаем данные компании
+export const contactGet = (contactId) => m.crmContactGet(contactId);
 
-  if (res) console.log(`Id нового контакта: `, res);
-  else console.log(`Ошибка при создании контакта: `, fields.TITLE);
-};
+
+
+// const fields = {
+//   "ADDRESS" : address;
+//   "NAME" : NAME;
+//   "LAST_NAME" : LAST_NAME;
+//   "SECOND_NAME" : SECOND_NAME
+
+//   "CREATED_BY_ID": CONSTS.CREATED_BY_ID, // Кто создал 1 - Корзан Вячеслав
+//   "ASSIGNED_BY_ID": CONSTS.ASSIGNED_BY_ID, // Назначенный ответственный
+//   "PHONE": [{ "VALUE": "+79501197000" || null }],
+// }
+export const contactAdd = (fields) => m.crmContactAdd(fields);
+
+export const contactDelete = (contactId) => m.crmContactDelete(contactId);

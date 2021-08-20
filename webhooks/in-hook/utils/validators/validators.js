@@ -1,4 +1,4 @@
-const isEmail = (email) => {
+export const isEmail = (email) => {
   if (!email) return false;
   
   const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -9,7 +9,7 @@ const isEmail = (email) => {
   }
 };
 
-const isEmpty = (str) => {
+export const isEmpty = (str) => {
   if (!str || str.trim() === ``) {
     return true;
   } else {
@@ -19,11 +19,11 @@ const isEmpty = (str) => {
 
 
 // Валидация корректного метода
-const validationMethod = method => {
+export const validationMethod = method => {
   const availableMethods = [
+    `crm.company.list`,
     `crm.lead.add`,
     `crm.company.add`,
-    `crm.company.list`,
   ]
   let errors = {};
 
@@ -38,7 +38,7 @@ const validationMethod = method => {
 
 
 // Валидация корректного списка комманд для batch
-const validationBatchList = list => {
+export const validationBatchList = list => {
   let errors = {};
 
   if (!list?.length) errors.list = `Список команд для batch не должен быть пустым`;
@@ -52,7 +52,7 @@ const validationBatchList = list => {
  
 
 
-const validationSignupData = (data) => {
+export const validationSignupData = (data) => {
   let errors = {};
   // Проверка email
   if (isEmpty(data.email)) errors.email = `Поле email не должно быть пустым`;
@@ -69,44 +69,3 @@ const validationSignupData = (data) => {
   }
 };
 
-
-// Валидация для доступа к комментариям
-const validationGetUserComments = (req, taskOwnerId) => {
-  let errors = {};
-
-  if (req.user.userId === taskOwnerId) {
-    console.log(`Сотрудник, получает доступ к своим комментариям`);
-
-  } else if (req.user.role === role.SUPER) {
-    console.log(`Супервайзер курса, получает доступ к комментариям пользователя`);
-
-  } else if (req.user.userId !== taskOwnerId && req.user.role !== role.SUPER) {
-    console.log(`Сотрудник пытается получить доступ к комментариям другого сотрудника`);
-    errors.general = `Извините, у вас недостаточно прав для доступа к комментариям другого человека`;
-  }
-
-  return {
-    errors,
-    valid: Object.keys(errors).length === 0 ? true : false,
-  }
-};
-
-
-const reduceUserData = (data) => {
-  let userDetails = {};
-
-  if (!isEmpty(data.secondName.trim())) userDetails.secondName = data.secondName;
-  if (!isEmpty(data.middleName.trim())) userDetails.middleName = data.middleName;
-
-  return userDetails;
-};
-
-
-module.exports = {
-  validationMethod,
-  validationBatchList,
-  validationSignupData,
-  validationGetUserComments,
-  reduceUserData,
-  isEmpty,
-};

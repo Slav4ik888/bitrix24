@@ -1,6 +1,7 @@
 
 // Методы
-export const CrmMethodType = {
-  ADD: `crm.company.add`,
-  UPDATE: `crm.company.update`,
+export const MethodType = {
+  COMPANY_LIST: `crm.company.list`,
+  COMPANY_ADD: `crm.company.add`,
+  COMPANY_UPDATE: `crm.company.update`,
 };

@@ -1,0 +1,20 @@
+{
+  "name": "in-hook",
+  "version": "1.0.0",
+  "description": "Взаимодействие с badcom.bitrix24",
+  "type": "module",
+  "scripts": {
+    "test": "npm run test.jest",
+    "test.jest": "jest"
+  },
+  "keywords": [
+    "bitrix",
+    "badcom"
+  ],
+  "author": "Vyacheslav",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "27.0.6",
+    "qs": "6.10.1"
+  }
+}

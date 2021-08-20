@@ -1,4 +1,4 @@
-import { HOOK_URL } from '../consts/consts.js';
+import { HOOK_URL, paramsPOST } from '../consts/consts.js';
 
 
 
@@ -7,19 +7,34 @@ import { HOOK_URL } from '../consts/consts.js';
  * 
  * @returns contactFields
  */
-export async function crmCompanyContactFields() {
+export async function crmContactFields() {
   try {
-    const response = await fetch(`${HOOK_URL}/crm.company.contact.fields.json`);
+    const response = await fetch(`${HOOK_URL}/crm.contact.fields.json`);
     const data = await response.json();
-    // console.log('crmCompanyContactFields: ', data.result); // Возвращает созданный ID
 
     return data.result;
   }
-  catch (e) {
-    console.log('e: ', e);
-    console.error(e);
-    return;
+  catch (e) { console.log('e: ', e); console.error(e); return; }
+}
+
+
+
+/**
+ * Получаем данные по контакту по id
+ * 
+ * @param {number} id 
+ * @returns {contactData}
+ */
+export async function crmContactGet(id) {
+  try {
+    paramsPOST.body = JSON.stringify({ id }); // contact ID
+
+    const response = await fetch(`${HOOK_URL}/crm.contact.get.json`, paramsPOST);
+    const contactData = await response.json();
+
+    return contactData;
   }
+  catch (e) { console.log('e: ', e); console.error(e); return }
 }
 
 
@@ -30,22 +45,33 @@ export async function crmCompanyContactFields() {
  * @returns contactId | undefined;
  */
 export async function crmContactAdd(fields) {
+  console.log('fields: ', fields);
   try {
-    const params = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      body: JSON.stringify({ fields }) // Подготовленные поля
-    };
-    const response = await fetch(`${HOOK_URL}/crm.contact.add.json`, params);
+    paramsPOST.body = JSON.stringify({ fields }); // Подготовленные поля
+
+    const response = await fetch(`${HOOK_URL}/crm.contact.add.json`, paramsPOST);
     const contactData = await response.json();
-    console.log('crmContactAdd: ', contactData.result); // Возвращает созданный ID
 
     return contactData.result;
   }
-  catch (e) {
-    console.log('e: ', e);
-    console.error(e);
-    return;
-  }
+  catch (e) { console.log('e: ', e); console.error(e); return }
 }
 
+
+/**
+ * Delete contact by Id
+ * 
+ * @param {number} id 
+ * @returns {contactData}
+ */
+export async function crmContactDelete(id) {
+  try {
+    paramsPOST.body = JSON.stringify({ id }); // contact ID
+
+    const response = await fetch(`${HOOK_URL}/crm.contact.delete.json`, paramsPOST);
+    const contactData = await response.json();
+
+    return contactData.result;
+  }
+  catch (e) { console.log('e: ', e); console.error(e); return }
+}

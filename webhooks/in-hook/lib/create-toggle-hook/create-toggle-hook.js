@@ -1,5 +1,8 @@
 import { displayHookQueryForm } from '../display/display.js';
+import { addUploadListener } from '../create-group-companies-with-contacts/create-group-companies-with-contacts.js';
 import submit from '../../controllers/submit.js';
+
+
 
 
 /**
@@ -11,16 +14,15 @@ import submit from '../../controllers/submit.js';
  * @param {selector} formHookSubmit - Текущая активная форма
  * @returns 
  */
-export const createToggleHook = () => {
+const createToggleHook = () => {
   // Текущая активная форма
   let formHookSubmit;
 
   // В данный момент открытый контент Хука
   let openedHookContent = null;
+  let openedArrow = null;
 
   return function (target) {
-    
-    // const target = e.target;
     const li = target.closest(`li`);
 
     if (!li) return;
@@ -29,22 +31,30 @@ export const createToggleHook = () => {
 
     if (target.closest(`.hook-item-header`)) { // Если нажали на header
       const currentContent = li.querySelector(`.hook-item-content`);
-
+      const currentArrow = li.querySelector(`.toggle-arrow`);
     
       if (openedHookContent) {
         if (openedHookContent === currentContent) {
           currentContent.classList.add(`hide`);
+          currentArrow.style = `transform: rotate(0deg);`;
           openedHookContent = null;
+          openedArrow = null;
         }
         else {
           openedHookContent.classList.add(`hide`);
+          openedArrow.style = `transform: rotate(0deg);`;
+
           currentContent.classList.remove(`hide`);
+          currentArrow.style = `transform: rotate(90deg);`;
           openedHookContent = currentContent;
+          openedArrow = currentArrow;
         }
       }
       else {
         currentContent.classList.remove(`hide`);
+        currentArrow.style = `transform: rotate(90deg);`;
         openedHookContent = currentContent;
+        openedArrow = currentArrow;
       }
 
       // Ждём как прорисуется в браузере и удаляем прошлый слушатель, а новый вешаем
@@ -53,6 +63,9 @@ export const createToggleHook = () => {
 
         formHookSubmit.removeEventListener(`submit`, submit);
         formHookSubmit.addEventListener(`submit`, submit);
+
+        const upload = li.querySelector(`.file-upload`);
+        if (upload) addUploadListener();
       }, 0);
 
       // Выводит форму для хука
@@ -60,3 +73,5 @@ export const createToggleHook = () => {
     }
   }
 };
+
+export default createToggleHook();
