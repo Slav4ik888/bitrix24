@@ -1,7 +1,30 @@
 import { HOOK_URL, paramsPOST } from '../consts/consts.js';
+import { createTimer } from '../utils/timer/timer.js';
 import { validationMethod, validationBatchList } from '../utils/validators/validators.js';
+import { MethodType } from '../types.js';
+
+const createTitleField = (str) => {
+};
 
 
+const getOriginIdFromStr = (str) => {
+  const idxOrigin = str.indexOf(`ORIGIN_ID`);
+  const idxStartId = idxOrigin + 9 + 2;
+
+  const strAll = str.slice(idxStartId, idxStartId + 6);
+  const idxEndId = strAll.indexOf(`&`);
+
+  let ORIGIN_ID = ``;
+  // Если нет & значит берём целиком (это для контакта)
+  if (idxEndId !== -1) ORIGIN_ID = strAll.slice(0, idxEndId);
+  else ORIGIN_ID = strAll;
+  
+  // ORIGIN_ID]=1015&field
+  // console.log('strAll: ', strAll);
+  // console.log('ORIGIN_ID: ', ORIGIN_ID);
+
+  return ORIGIN_ID;
+};
 
 /**
  * Создаём 1 batch для массового обновления компаний
@@ -11,11 +34,19 @@ import { validationMethod, validationBatchList } from '../utils/validators/valid
  * @returns params
  */
 const createOneBatch = (listItems, method) => {
-  // const method = `crm.company.update`; // `crm.company.add`
   let cmdObj = {};
 
-  listItems.forEach((item, i) => cmdObj[method + i] = method + "?" + item);
-  // console.log('cmdObj: ', cmdObj);
+  switch (method) {
+    case MethodType.COMPANY_ADD:
+    case MethodType.CONTACT_ADD:
+      listItems.forEach((item, i) => {
+        cmdObj[`ORIGIN_ID_` + getOriginIdFromStr(item)] = method + "?" + item;
+      });
+      break;
+    
+    default:
+      listItems.forEach((item, i) => cmdObj[method + i] = method + "?" + item);
+  }
 
   const params = {
     "halt": 0,
@@ -25,81 +56,7 @@ const createOneBatch = (listItems, method) => {
 };
 
 
-/**
- * Отправляет 1 batch запрос с переданным списком команд для вызова на стороне Bitrix24
- * @param {String} method 
- * @param {Array of string item} listItems пример строки "crm.lead.add?fields[TITLE]=Test3 lead by robot nah&fields[CREATED_BY_ID]=2",
- * @returns 
- */
-async function sendOneBatch(batchItems) {
-  // {
-  //   const { valid, errors } = validationBatchList(batchItems);
-  //   if (!valid) {
-  //     console.log('errors: ', errors);
-  //     return errors;
-  //   }
-  // }
 
-  try {
-    paramsPOST.body = JSON.stringify(batchItems);
-
-    const response = await fetch(`${HOOK_URL}/batch.json`, paramsPOST);
-    const companyData = await response.json();
-    console.log('companyData: ', companyData);
-    console.log(`${HOOK_URL}/batch.json - successfully!`);
-    // return batchItems.cmd[`crm.company.list0`];
-    return companyData;
-  }
-  catch (e) { console.log('e: ', e); }
-};
-
-// Счётчик подсчёта времени
-function createTimer() {
-  function timer(type) {
-    timer.calls.push({ type, time: new Date() / 1000 });
-  }
-
-  timer.calls = [];
-  return timer;
-};
-
-
-// Создаём много тестовых методов
-export async function sendAllBatches(batches, cbResultFunc) {
-  console.log(`Start send all batches`);
-
-  let result = [];
-  let timer = createTimer(); // Время промежуточных циклов
-
-
-  const callback = (res, finish) => {
-    timer(`callback start`);
-    console.log('callback: ', finish);
-    result.push(res);
-
-    if (finish) cbResultFunc(result, timer);
-  };
-
-  const setDelay = (key, finish) => {
-    timer(`setDelay: ${key}`);
-
-    setTimeout(async () => {
-      timer(`setTimeout ${key}`);
-      console.log(`setDelay `, key);
-
-      const res = await sendOneBatch(batches[key]);
-      callback(res, finish);
-    }, 1500 * key);
-  }
-
-  for (let key = 0; key < batches.length; key++) {
-    timer(`for batches: ${key}`)
-    
-    let finish = key + 1 === batches.length;
-    console.log('finish: ', finish);
-    setDelay(key, finish);
-  }
-};
 
 
 
@@ -144,4 +101,62 @@ export const createBatches = (listItems, method) => {
 
 
 
+/**
+ * Отправляет 1 batch запрос с переданным списком команд для вызова на стороне Bitrix24
+ * @param {String} method 
+ * @param {Array of string item} listItems пример строки "crm.lead.add?fields[TITLE]=Test3 lead by robot nah&fields[CREATED_BY_ID]=2",
+ * @returns 
+ */
+async function sendOneBatch(batchItems) {
+  try {
+    paramsPOST.body = JSON.stringify(batchItems);
 
+    const response = await fetch(`${HOOK_URL}/batch.json`, paramsPOST);
+    const companyData = await response.json();
+    console.log('companyData: ', companyData);
+    console.log(`${HOOK_URL}/batch.json - successfully!`);
+    // return batchItems.cmd[`crm.company.list0`];
+    return companyData;
+  }
+  catch (e) { console.log('e: ', e); }
+};
+
+
+
+// Отправляем все batches to BX24
+export async function sendAllBatches(batches, cbResultFunc) {
+  console.log(`Start send all batches`);
+
+  let result = [];
+  let timer = createTimer(); // Время промежуточных циклов
+
+
+  const callback = (res, finish) => {
+    timer(`callback start`);
+    console.log('callback: ', finish);
+    result.push(res);
+
+    if (finish) cbResultFunc(result, timer);
+  };
+
+  const setDelay = (key, finish) => {
+    timer(`setDelay: ${key}`);
+
+    setTimeout(async () => {
+      timer(`setTimeout ${key}`);
+      console.log(`setDelay `, key);
+
+      const res = await sendOneBatch(batches[key]);
+      callback(res, finish);
+    }, 1500 * key);
+  }
+
+  for (let key = 0; key < batches.length; key++) {
+    timer(`for batches: ${key}`)
+    
+    let finish = key + 1 === batches.length;
+    console.log('finish: ', finish);
+    setDelay(key, finish);
+    // if (key === 0) setDelay(key, true);
+  }
+};

@@ -2,7 +2,7 @@ import * as f from './forms.js';
 import * as com from './company.js';
 import * as cli from './contact.js';
 import { createNewCompanyWithContact } from '../lib/create-new-company-with-contact/create-new-company-with-contact.js';
-import { createGroupCopmaniesWithContacts } from '../lib/create-group-companies-with-contacts/create-group-companies-with-contacts.js';
+import { createGroupCompaniesWithContacts } from '../lib/create-group-companies-with-contacts/create-group-companies-with-contacts.js';
 
 
 
@@ -62,7 +62,7 @@ export default async function (e) {
       result = await createNewCompanyWithContact(mockCompanyData); break;
 
     case 'create-group-companies-with-contacts':
-      result = await createGroupCopmaniesWithContacts(); break;
+      result = await createGroupCompaniesWithContacts(); break;
     // COMPANY
 
     case 'crm-company-contact-fields':

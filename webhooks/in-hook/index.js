@@ -59,4 +59,4 @@ displayListHTML(hooksContainer, hooksList, hooksListArr);
 // Создаём новую компанию в Bitrix24 а если она есть то обновляем
 // crmCompanyAddOrUpdate("22", mocks.fieldsUpdate);
 
-// git add . && git commit -m "existingClients" && git push origin master
+// git add . && git commit -m "companyGroupConnectWithContact" && git push origin master
