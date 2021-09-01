@@ -16,7 +16,7 @@ export const addUploadListener = () => {
     localStorage.setItem(`hookReadedData`, JSON.stringify(data));
   };
 
-  saveDataFunc()
+  // saveDataFunc();
   fileUploadSubmit.disabled = false;
 
   fileUpload.addEventListener(`change`, (e) => {
@@ -33,18 +33,18 @@ export async function createGroupCompaniesWithContacts() {
   try {
     // [ 1 ] - Read data about all downloaded clients 
     const readedData = JSON.parse(localStorage.getItem(`hookReadedData`));
-    console.log('readedData: ', readedData);
+    console.log('Прочитанное из файла: ', readedData);
     
     // [ 2 ] - Делаем запрос по всем компаниям и получаем результат о наличии ORIGIN_ID
     companyGroupList(readedData, cbResGroupList);
 
     // [ 3 ] - Обрабатываем данные по полученным имеющимся компаниями 
     function cbResGroupList(existingClients) {
-      console.log('existingClients: ', existingClients);
+      console.log('Уже зарегистрированные компании existingClients: ', existingClients);
 
       // Удаляем existingClients из общего списка компаний для создания
       const clearnedClients = getClientsWithoutExistedCompanies(readedData, existingClients);
-      console.log('clearnedClients: ', clearnedClients);
+      console.log('Загруженные компании очищенные от уже зарегистрированных ранее clearnedClients: ', clearnedClients);
 
       // [ 4 ] => создаём компании
       companyGroupAdd(clearnedClients, cbResCompanyGroupAdd);
@@ -54,7 +54,7 @@ export async function createGroupCompaniesWithContacts() {
     // [ 5 ]  => создаём компании
     
     function cbResCompanyGroupAdd(listCompanyIds) {
-      console.log('listCompanyIds: ', listCompanyIds);
+      console.log('Список удачно созданных компаний listCompanyIds: ', listCompanyIds);
       // {
       //   'ORIGIN_ID_1013': 5123,
       //   'ORIGIN_ID_1014': 5125,

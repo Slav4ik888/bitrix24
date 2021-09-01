@@ -14,7 +14,7 @@ export async function companyGroupList(readedData, callback) {
   
   // Делим по пачкам 50шт
   const batches = createBatches(reqList, MethodType.COMPANY_LIST);
-  console.log('companyGroupList batches: ', batches);
+  console.log('Send req to find overlap ORIGIN_ID: ', batches);
 
   // Обработка полученных результатов
   const cbListResult = (res, timer) => {

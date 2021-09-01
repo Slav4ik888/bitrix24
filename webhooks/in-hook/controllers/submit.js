@@ -3,6 +3,7 @@ import * as com from './company.js';
 import * as cli from './contact.js';
 import { createNewCompanyWithContact } from '../lib/create-new-company-with-contact/create-new-company-with-contact.js';
 import { createGroupCompaniesWithContacts } from '../lib/create-group-companies-with-contacts/create-group-companies-with-contacts.js';
+import { createContactWithPhone } from '../tests/create-contact-with-phone.js';
 
 
 
@@ -58,6 +59,9 @@ export default async function (e) {
   let result;
 
   switch (hookQuery) {
+    case 'test-create-contact-with-phone':
+      result = await createContactWithPhone(); break;
+    
     case 'test-create-company-with-contact':
       result = await createNewCompanyWithContact(mockCompanyData); break;
 

@@ -1,4 +1,16 @@
 export default {
+  TEST_CREATE_CONTACT_WITH_PHONE: {
+    description: {
+      title: `Создать тестовый контакт с номером телефона`,
+      query: ``,
+    },
+    query: ``,
+    form: `<form class="form-hook-submit hook-item-content" name="test-create-contact-with-phone">
+            <input type="submit" value="Создать" />
+          </form>`,
+    status: true,
+  },
+  
   TEST_CREATE_COMPANY_WITH_CONTACT: {
     description: {
       title: `Создать тестовую компанию с контактом`,

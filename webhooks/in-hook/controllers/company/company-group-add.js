@@ -20,10 +20,12 @@ export async function companyGroupAdd(clearnedClients, callback) {
 
   // Обработка полученных результатов
   const cbListResult = (res, timer) => {
-    console.log('res: ', res);
+    console.log('2 res: ', res);
     showTimer(timer.calls);
 
     const listCompanyIds = getResultFromResBx24(res);
+    console.log('listCompanyIds: ', listCompanyIds);
+    
     return callback(listCompanyIds);
   }
 

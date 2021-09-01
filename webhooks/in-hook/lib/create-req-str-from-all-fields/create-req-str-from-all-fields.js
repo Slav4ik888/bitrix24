@@ -21,7 +21,8 @@ const createReqStrFromAllFields = (item, method) => {
         if (Object.prototype.hasOwnProperty.call(item, key)) {
           if (str) str += `&`; // Для первого элемента значок не ставим
           if (key === `PHONE`) {
-            str += `fields[${key}]=%5B%7B%20%22VALUE%22%3A%20%22%2B${item.PHONE[0].VALUE}%22%20%7D%5D`;
+            str += `fields[${key}][0][VALUE]=${item.PHONE[0].VALUE}`;
+            // str += `fields%5B${key}%5D%5B0%5D%5BVALUE%5D=${item.PHONE[0].VALUE}`;
           }
           else str += `fields[${key}]=${item[key]}`;
         }
@@ -73,8 +74,6 @@ const createFields = (item, method) => {
       fields.ID = item.ID;
       break;
   }
-
-  console.log('fields: ', fields);
 
   return fields;
 }

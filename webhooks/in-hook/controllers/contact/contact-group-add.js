@@ -20,10 +20,12 @@ export async function contactGroupAdd(clearnedClients, callback) {
 
   // Обработка полученных результатов
   const cbListResult = (res, timer) => {
-    console.log('res: ', res);
+    console.log('22 res: ', res);
     showTimer(timer.calls);
 
     const listContactIds = getResultFromResBx24(res);
+    console.log('listContactIds: ', listContactIds);
+    
     return callback(clearnedClients, listContactIds);
   }
 

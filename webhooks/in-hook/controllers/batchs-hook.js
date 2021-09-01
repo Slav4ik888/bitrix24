@@ -74,7 +74,7 @@ export const createBatches = (listItems, method) => {
   // Создаём пачку в 50 batchs и сохраняем в resultBatches
   const pushToResultBatches = (batches, method) => {
     const params = createOneBatch(batches, method);
-    console.log('params: ', params);
+    // console.log('Пачка в 50 batchs: ', params);
     resultBatches.push(params);
   };
 
@@ -113,9 +113,8 @@ async function sendOneBatch(batchItems) {
 
     const response = await fetch(`${HOOK_URL}/batch.json`, paramsPOST);
     const companyData = await response.json();
-    console.log('companyData: ', companyData);
-    console.log(`${HOOK_URL}/batch.json - successfully!`);
-    // return batchItems.cmd[`crm.company.list0`];
+    console.log('Res companyData: ', companyData);
+    console.log(`batch.json - successfully!`);
     return companyData;
   }
   catch (e) { console.log('e: ', e); }
@@ -157,6 +156,5 @@ export async function sendAllBatches(batches, cbResultFunc) {
     let finish = key + 1 === batches.length;
     console.log('finish: ', finish);
     setDelay(key, finish);
-    // if (key === 0) setDelay(key, true);
   }
 };

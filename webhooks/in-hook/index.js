@@ -34,9 +34,6 @@ displayListHTML(hooksContainer, hooksList, hooksListArr);
 
 
 
-
-
-
 // const companyId = document.querySelector(`.company-id`);
 // const hookSubmit = document.querySelector(`.hook-submit`);
 
@@ -59,4 +56,4 @@ displayListHTML(hooksContainer, hooksList, hooksListArr);
 // Создаём новую компанию в Bitrix24 а если она есть то обновляем
 // crmCompanyAddOrUpdate("22", mocks.fieldsUpdate);
 
-// git add . && git commit -m "companyGroupConnectWithContact" && git push origin master
+// git add . && git commit -m "refact save PHONE value" && git push origin master
