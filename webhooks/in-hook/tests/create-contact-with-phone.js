@@ -1,5 +1,5 @@
 // TEST CREATE PHONE
-import { createReqList } from '../lib/create-req-str-from-all-fields/create-req-str-from-all-fields.js';
+import { createReqList } from '../lib/create-requests/create-req-list.js';
 import { createBatches, sendAllBatches } from '../controllers/batchs-hook.js';
 import { getResultFromResBx24 } from '../lib/get-result-from-res-bx24/get-result-from-res-bx24.js';
 import { MethodType } from '../types.js';

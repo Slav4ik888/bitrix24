@@ -1,30 +1,13 @@
-import { readJSONAndProcessData } from '../../utils/files/files.js';
 import { companyGroupList } from '../../controllers/company/company-group-list.js';
 import { companyGroupAdd } from '../../controllers/company/company-group-add.js';
 import { companyGroupConnectWithContact } from '../../controllers/company/company-group-connect-with-contact.js';
 import { contactGroupAdd } from '../../controllers/contact/contact-group-add.js';
 import { getClientsWithoutExistedCompanies } from '../get-clients-without-existed-companies/get-clients-without-existed-companies.js';
 import { getClientsByCreatedCompaniesAndId } from '../get-clients-by-created-ompanies-and-id/get-clients-by-created-ompanies-and-id.js';
-
-
-
-export const addUploadListener = () => {
-  const fileUpload = document.querySelector(`.file-upload`);
-  const fileUploadSubmit = document.querySelector(`.file-upload-submit`);
-
-  const saveDataFunc = (data) => {
-    localStorage.setItem(`hookReadedData`, JSON.stringify(data));
-  };
-
-  // saveDataFunc();
-  fileUploadSubmit.disabled = false;
-
-  fileUpload.addEventListener(`change`, (e) => {
-    readJSONAndProcessData(e, saveDataFunc);
-    fileUploadSubmit.disabled = false;
-  });
-};
-
+// Data
+import { getStorageData } from '../../utils/data/local-storage.js';
+// Types
+import { StorageName } from '../../types.js';
 
 
 // Проверить есть ли компания => создать компанию => создать контакт => соединить
@@ -32,7 +15,7 @@ export const addUploadListener = () => {
 export async function createGroupCompaniesWithContacts() {
   try {
     // [ 1 ] - Read data about all downloaded clients 
-    const readedData = JSON.parse(localStorage.getItem(`hookReadedData`));
+    const readedData = getStorageData(StorageName.READED_DATA);
     console.log('Прочитанное из файла: ', readedData);
     
     // [ 2 ] - Делаем запрос по всем компаниям и получаем результат о наличии ORIGIN_ID

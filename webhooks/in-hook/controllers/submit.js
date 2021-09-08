@@ -1,5 +1,6 @@
 import * as f from './forms.js';
 import * as com from './company.js';
+import * as c from './company-methods-bx24.js';
 import * as cli from './contact.js';
 import { createNewCompanyWithContact } from '../lib/create-new-company-with-contact/create-new-company-with-contact.js';
 import { createGroupCompaniesWithContacts } from '../lib/create-group-companies-with-contacts/create-group-companies-with-contacts.js';
@@ -54,6 +55,7 @@ const mockCompanyData = {
 export default async function (e) {
   e.preventDefault();
   const hookQuery = e.target.name; // .replace(/-/g,".");
+  console.log('hookQuery: ', hookQuery);
   const form = e.target;
 
   let result;
@@ -67,13 +69,18 @@ export default async function (e) {
 
     case 'create-group-companies-with-contacts':
       result = await createGroupCompaniesWithContacts(); break;
+    
+    
     // COMPANY
 
+    case 'crm-company-fields':
+      result = await c.companyFields(); break;
+    
     case 'crm-company-contact-fields':
       result = await com.companyContactFields(); break;
     
-    case 'crm-company-list':
-      result = await f.companyList(form); break;
+    case 'crm-company-list-by-origin-id':
+      result = await f.companyListByOriginId(form); break;
     
     case 'crm-company-add':
       result = await f.companyAdd(form); break;
@@ -83,6 +90,9 @@ export default async function (e) {
     
     case 'crm-company-contact-add':
       result = await f.companyContactAdd(form); break;
+    
+    case 'crm-company-update':
+      result = await f.companyUpdate(form); break;
     
     case 'crm-company-delete':
       result = await f.companyDelete(form); break;

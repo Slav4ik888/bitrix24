@@ -36,13 +36,25 @@ export default {
     status: true,
   },
 
+  CRM_COMPANY_FIELD: {
+    description: {
+      title: `Получить список полей для компании`,
+      query: `crm.company.fields`,
+    },
+    query: `crm.company.list.json`,
+    form: `<form class="form-hook-submit hook-item-content" name="crm-company-fields">
+            <input type="submit" value="Получить" />
+          </form>`,
+    status: true,
+  },
+
   CRM_COMPANY_LIST: {
     description: {
-      title: `Получить список компаний (по полям)`,
+      title: `Получить список компаний (по ORIGIN_ID)`,
       query: `crm.company.list`,
     },
     query: `crm.company.list.json`,
-    form: `<form class="form-hook-submit hook-item-content" name="crm-company-list">
+    form: `<form class="form-hook-submit hook-item-content" name="crm-company-list-by-origin-id">
             <div class="input-block">
               <span class="label">ORIGIN_ID:</span>
               <input type="number" name="ORIGIN_ID" required/>
@@ -66,6 +78,46 @@ export default {
             <div class="input-block">
               <span class="label">ORIGIN_ID:</span>
               <input type="number" name="ORIGIN_ID" />
+            </div>
+            <div class="input-block">
+              <span class="label">CREATED_BY_ID:</span>
+              <input type="number" name="CREATED_BY_ID" />
+            </div>
+            <div class="input-block">
+              <span class="label">ASSIGNED_BY_ID:</span>
+              <input type="number" name="ASSIGNED_BY_ID" />
+            </div>
+            <input type="submit" value="Создать" />
+          </form>`,
+    status: true,
+  },
+
+  CRM_COMPANY_UPDATE: {
+    description: {
+      title: `Обновить компанию`,
+      query: `crm.company.update`,
+    },
+    query: `crm.company.update.json`,
+    form: `<form class="form-hook-submit hook-item-content" name="crm-company-update">
+            <div class="input-block">
+              <span class="label">ID:</span>
+              <input type="number" name="ID" required />
+            </div>
+            <div class="input-block">
+              <span class="label">Название компании:</span>
+              <input type="text" name="TITLE" />
+            </div>
+            <div class="input-block">
+              <span class="label">Адрес:</span>
+              <input type="text" name="ADDRESS" />
+            </div>
+            <div class="input-block">
+              <span class="label">Телефон:</span>
+              <input type="tel" name="PHONE" />
+            </div>
+            <div class="input-block">
+              <span class="label">Комментарий:</span>
+              <input type="text" name="COMMENTS" />
             </div>
             <div class="input-block">
               <span class="label">CREATED_BY_ID:</span>

@@ -1,5 +1,5 @@
 import { displayHookQueryForm } from '../display/display.js';
-import { addUploadListener } from '../create-group-companies-with-contacts/create-group-companies-with-contacts.js';
+import addUploadListener from '../data/add-upload-listener/index.js';
 import submit from '../../controllers/submit.js';
 
 

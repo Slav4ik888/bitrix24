@@ -21,10 +21,9 @@
  */
 export const getResultFromResBx24 = (res) => {
   console.log('Для обработки res: ', res);
-  localStorage.setItem(`ResBx24: `, JSON.stringify(res));
 
   let arr = {};
-  // TODO:
+
   for (let key = 0; key < res.length; key++) {
     const objRes = res[key].result.result;
     console.log('objRes: ', objRes);

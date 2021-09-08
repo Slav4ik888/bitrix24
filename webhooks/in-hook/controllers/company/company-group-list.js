@@ -1,4 +1,4 @@
-import { createReqList } from '../../lib/create-req-str-from-all-fields/create-req-str-from-all-fields.js';
+import { createReqList } from '../../lib/create-requests/create-req-list.js';
 import { getExistingClients } from '../../lib/get-existing-clients/get-existing-clients.js';
 import { createBatches, sendAllBatches } from '../batchs-hook.js';
 import { MethodType } from '../../types.js';

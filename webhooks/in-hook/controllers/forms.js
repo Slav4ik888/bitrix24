@@ -1,17 +1,18 @@
 // Methods bx24
 import * as com from './company.js';
+import * as c from './company-methods-bx24.js';
 import * as cli from './contact.js';
 // Functions
-import { createFieldsForCompanyAdd, createRequestFields, createFieldsForCompanyContactAdd } from '../lib/create-fields/create-fields.js';
+import * as field from '../lib/create-fields/create-fields.js';
 
 
 
 // Запрашиваем список компаний по полю ORIGIN_ID
-export const companyList = (form) => {
+export const companyListByOriginId = async (form) => {
   const ORIGIN_ID = form.ORIGIN_ID.value || "";
-  const fields = createRequestFields({ ORIGIN_ID });
+  const fields = field.createRequestFields({ ORIGIN_ID });
 
-  return com.companyList(fields);
+  return c.companyList(fields);
 };
 
 
@@ -33,7 +34,7 @@ export const companyAdd = (form) => {
 
   if (!TITLE) return console.log(`Не заполнено поле TITLE`);
 
-  const fields = createFieldsForCompanyAdd({ TITLE, ORIGIN_ID, CREATED_BY_ID, ASSIGNED_BY_ID });
+  const fields = field.createFieldsForCompanyAdd({ TITLE, ORIGIN_ID, CREATED_BY_ID, ASSIGNED_BY_ID });
   
   return com.companyAdd(fields);
 };
@@ -47,12 +48,29 @@ export const companyGet = (form) => {
 };
 
 
+// Обновляем данные компании
+export async function companyUpdate(form) {
+  const TITLE = form.TITLE.value;
+  const id = form.ID.value;
+  const COMMENTS = form.COMMENTS.value || "";
+  const ADDRESS = form.ADDRESS.value || "";
+  const PHONE = form.PHONE.value || "";
+  const CREATED_BY_ID = form.CREATED_BY_ID.value || "1";
+  const ASSIGNED_BY_ID = form.ASSIGNED_BY_ID.value || "1";
+
+  if (!id) return console.log(`Не заполнено поле ID`);
+
+  const fields = field.createFieldsForCompanyUpdate({ TITLE, COMMENTS, ADDRESS, CREATED_BY_ID, ASSIGNED_BY_ID, PHONE: [{VALUE: PHONE}] });
+  
+  return c.companyUpdate(id, fields);
+};
 
 // Delete company by Id
 export const companyDelete = (form) => {
   const companyId = form.companyId.value;
   return com.companyDelete(companyId);
 };
+
 
 
 // Получаем данные по контакту
@@ -72,7 +90,7 @@ export const companyContactAdd = (form) => {
 
   if (!companyId || !contactId) return console.log(`Поля должны быть заполнены`);
 
-  const fields = createFieldsForCompanyContactAdd(contactId);
+  const fields = field.createFieldsForCompanyContactAdd(contactId);
 
   return com.companyContactAdd(companyId, fields);
 };
@@ -91,7 +109,7 @@ export const contactAdd = (form) => {
 
   if (!NAME) return console.log(`Не заполнено поле ИМЯ`);
 
-  const fields = createFieldsForContactAdd({ ADDRESS, NAME, LAST_NAME, SECOND_NAME, CREATED_BY_ID, ASSIGNED_BY_ID, PHONE: [{VALUE: PHONE}] });
+  const fields = field.createFieldsForContactAdd({ ADDRESS, NAME, LAST_NAME, SECOND_NAME, CREATED_BY_ID, ASSIGNED_BY_ID, PHONE: [{VALUE: PHONE}] });
 
   console.log('fields: ', fields);
   return cli.contactAdd(fields);

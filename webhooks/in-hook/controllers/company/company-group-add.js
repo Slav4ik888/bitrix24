@@ -1,9 +1,14 @@
-import { createReqList } from '../../lib/create-req-str-from-all-fields/create-req-str-from-all-fields.js';
+// BX24
+import { createReqList } from '../../lib/create-requests/create-req-list.js';
 import { createBatches, sendAllBatches } from '../batchs-hook.js';
-import { MethodType } from '../../types.js';
-import { showTimer } from '../../utils/timer/timer.js';
+// Helpers
 import { getResultFromResBx24 } from '../../lib/get-result-from-res-bx24/get-result-from-res-bx24.js';
-
+import { showTimer } from '../../utils/timer/timer.js';
+import { objectLength } from '../../utils/objects/objects.js';
+// Data
+import { setStorageData } from '../../utils/data/local-storage.js';
+// Types
+import { StorageName, MethodType } from '../../types.js';
 
 
 // Групповое добавление компаний
@@ -20,11 +25,15 @@ export async function companyGroupAdd(clearnedClients, callback) {
 
   // Обработка полученных результатов
   const cbListResult = (res, timer) => {
-    console.log('2 res: ', res);
+    console.log('ADDED_COMPANIES_RES: ', res);
+    setStorageData(StorageName.ADDED_COMPANIES_RES, res);
     showTimer(timer.calls);
 
+    
     const listCompanyIds = getResultFromResBx24(res);
-    console.log('listCompanyIds: ', listCompanyIds);
+    setStorageData(StorageName.ADDED_COMPANIES_IDS, listCompanyIds);
+    console.log('ADDED_COMPANIES_IDS: ', listCompanyIds);
+    console.log(`length: `, objectLength(listCompanyIds));
     
     return callback(listCompanyIds);
   }

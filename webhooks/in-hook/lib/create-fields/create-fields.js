@@ -11,6 +11,22 @@ export const createFieldsForCompanyAdd = ({ TITLE, ORIGIN_ID, CREATED_BY_ID, ASS
   "ASSIGNED_BY_ID": ASSIGNED_BY_ID
 });
 
+
+/**
+ * createFieldsForCompanyUpdate
+ * 
+ * @param {object} { TITLE, CREATED_BY_ID, ASSIGNED_BY_ID } 
+ * @returns 
+ */
+export const createFieldsForCompanyUpdate = ({ TITLE, COMMENTS, ADDRESS, PHONE: [{ VALUE: PHONE }], CREATED_BY_ID, ASSIGNED_BY_ID }) => ({
+  "TITLE": TITLE, // Название компании
+  "COMMENTS": COMMENTS,
+  "ADDRESS": ADDRESS,
+  PHONE: [{ VALUE: PHONE }],
+  "CREATED_BY_ID": CREATED_BY_ID,     // Кто создал 1 - Корзан Вячеслав
+  "ASSIGNED_BY_ID": ASSIGNED_BY_ID
+});
+
   
 /**
  * createFieldsForCompanyContactAdd

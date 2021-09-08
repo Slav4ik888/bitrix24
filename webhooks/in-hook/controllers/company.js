@@ -2,8 +2,8 @@
 import * as m from './company-methods-bx24.js';
 
 
-// Запрашиваем список компаний по полю ORIGIN_ID
-export const companyList = (fields) => m.crmCompanyList(fields);
+// 
+// export const companyList = (fields) => m.crmCompanyList(fields);
 
 
 

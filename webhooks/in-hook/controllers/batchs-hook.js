@@ -7,6 +7,25 @@ const createTitleField = (str) => {
 };
 
 
+// Проверяем ключи на true (по всем ли запросам мы получили данные от сервера)
+const isDataLoaded = (loadedKeys) => {
+  for (let keyIndex in loadedKeys)
+    if (loadedKeys[keyIndex].loaded !== true) return false;
+  
+  return true;
+};
+
+
+
+// Добавляем новый ключ в список проверки загружаемых данных
+const addLoadedKey = (loadedKeys, aKey) => {
+  loadedKeys[aKey] = {
+    loaded: false
+  }
+};
+
+
+
 const getOriginIdFromStr = (str) => {
   const idxOrigin = str.indexOf(`ORIGIN_ID`);
   const idxStartId = idxOrigin + 9 + 2;
@@ -25,6 +44,8 @@ const getOriginIdFromStr = (str) => {
 
   return ORIGIN_ID;
 };
+
+
 
 /**
  * Создаём 1 batch для массового обновления компаний
@@ -54,9 +75,6 @@ const createOneBatch = (listItems, method) => {
   };
   return params;
 };
-
-
-
 
 
 
@@ -107,14 +125,16 @@ export const createBatches = (listItems, method) => {
  * @param {Array of string item} listItems пример строки "crm.lead.add?fields[TITLE]=Test3 lead by robot nah&fields[CREATED_BY_ID]=2",
  * @returns 
  */
-async function sendOneBatch(batchItems) {
+async function sendOneBatch(batchItems, key, timer) {
   try {
     paramsPOST.body = JSON.stringify(batchItems);
-
+    timer(`sendOneBatch ${key} start: `);
     const response = await fetch(`${HOOK_URL}/batch.json`, paramsPOST);
     const companyData = await response.json();
+    timer(`sendOneBatch ${key} end: `);
+
     console.log('Res companyData: ', companyData);
-    console.log(`batch.json - successfully!`);
+    console.log(`[${key}] batch.json - successfully!`);
     return companyData;
   }
   catch (e) { console.log('e: ', e); }
@@ -124,37 +144,41 @@ async function sendOneBatch(batchItems) {
 
 // Отправляем все batches to BX24
 export async function sendAllBatches(batches, cbResultFunc) {
-  console.log(`Start send all batches`);
+  console.log(`Start send all batches: `, batches);
 
   let result = [];
+  let loadedKeys = {};
+  console.log('loadedKeys: ', loadedKeys);
   let timer = createTimer(); // Время промежуточных циклов
 
 
-  const callback = (res, finish) => {
+  const callback = (res) => {
     timer(`callback start`);
-    console.log('callback: ', finish);
+    const loadedKeysRes = isDataLoaded(loadedKeys);
+    console.log('callback: ', loadedKeysRes);
     result.push(res);
 
-    if (finish) cbResultFunc(result, timer);
+    if (loadedKeysRes) cbResultFunc(result, timer);
   };
 
-  const setDelay = (key, finish) => {
+  const setDelay = (key) => {
     timer(`setDelay: ${key}`);
 
     setTimeout(async () => {
       timer(`setTimeout ${key}`);
       console.log(`setDelay `, key);
 
-      const res = await sendOneBatch(batches[key]);
-      callback(res, finish);
+      const res = await sendOneBatch(batches[key], key, timer);
+      loadedKeys[key].loaded = true;
+
+      callback(res);
     }, 1500 * key);
   }
 
   for (let key = 0; key < batches.length; key++) {
     timer(`for batches: ${key}`)
     
-    let finish = key + 1 === batches.length;
-    console.log('finish: ', finish);
-    setDelay(key, finish);
+    addLoadedKey(loadedKeys, key); // Добавляем ключ для проверки
+    setDelay(key);
   }
 };

@@ -1,13 +1,27 @@
 import { HOOK_URL, paramsPOST } from '../consts/consts.js';
 
 
+// Возвращает список полей компании
+export async function companyFields(params) {
+  try {
+    paramsPOST.body = JSON.stringify(params);
+
+    const response = await fetch(`${HOOK_URL}/crm.company.fields.json`, paramsPOST);
+    const companyData = await response.json();
+
+    return companyData.result;
+  }
+  catch (e) { console.log('e: ', e); console.error(e); return }
+};
+
 
 /**
- * Получаем список компаний по запрошенным данным
+ * Запрашиваем и получаем список компаний по запрошенным данным (например ORIGIN_ID)
+ * 
  * @param {Object} params { order: { "DATE_CREATE": "ASC" }, filter: { "OPENED": "Y" }, select: ["ID", "TITLE"] }
  * @returns {Array} 
  */
-export async function crmCompanyList(params) {
+export async function companyList(params) {
   try {
     paramsPOST.body = JSON.stringify(params);
 
@@ -58,6 +72,24 @@ export async function crmCompanyGet(id) {
   catch (e) { console.log('e: ', e); console.error(e); return }
 }
 
+
+/**
+ * Обновляем данные компании
+ * @param {number} id 
+ * @param {*} fields 
+ * @returns boolean
+ */
+export async function companyUpdate(id, fields) {
+  try {
+    paramsPOST.body = JSON.stringify({ id, fields }); // Подготовленные поля
+
+    const response = await fetch(`${HOOK_URL}/crm.company.update.json`, paramsPOST);
+    const companyData = await response.json();
+
+    return companyData.result;
+  }
+  catch (e) { console.log('e: ', e); console.error(e); return }
+}
 
 
 /**

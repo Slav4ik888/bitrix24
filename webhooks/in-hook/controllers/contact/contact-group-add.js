@@ -1,8 +1,13 @@
-import { createReqList } from '../../lib/create-req-str-from-all-fields/create-req-str-from-all-fields.js';
+// BX24
+import { createReqList } from '../../lib/create-requests/create-req-list.js';
 import { createBatches, sendAllBatches } from '../batchs-hook.js';
-import { MethodType } from '../../types.js';
+// Helpers
 import { showTimer } from '../../utils/timer/timer.js';
 import { getResultFromResBx24 } from '../../lib/get-result-from-res-bx24/get-result-from-res-bx24.js';
+// Data
+import { setStorageData } from '../../utils/data/local-storage.js';
+// Types
+import { StorageName, MethodType } from '../../types.js';
 
 
 
@@ -20,11 +25,13 @@ export async function contactGroupAdd(clearnedClients, callback) {
 
   // Обработка полученных результатов
   const cbListResult = (res, timer) => {
-    console.log('22 res: ', res);
+    console.log('ADDED_CONTACTS_RES: ', res);
+    setStorageData(StorageName.ADDED_CONTACTS_RES, res);
     showTimer(timer.calls);
 
     const listContactIds = getResultFromResBx24(res);
-    console.log('listContactIds: ', listContactIds);
+    setStorageData(StorageName.ADDED_CONTACTS_IDS, listContactIds);
+    console.log('ADDED_CONTACTS_IDS: ', listContactIds);
     
     return callback(clearnedClients, listContactIds);
   }
