@@ -1,8 +1,6 @@
 import { finalReport } from './libs/final-report/final-report.js';
 import { saveBGCompanies, saveBGPersons, saveBX24Persons } from './libs/files/save-file/save-file.js';
 import { findConsilience, getRemainderArr } from './libs/find-consilience/find-consilience.js';
-import { sortingArr } from './utils/sorting/sorting-arr.js';
-import { getItemFromArrByField } from './utils/arrays/get-item-from-arr-by-field/get-item-from-arr-by-field.js';
 
 
 // ******************************************** //
@@ -59,7 +57,7 @@ counters.dbBGFinalL = DB_BG_FINAL.length;
 if (NEED_SAVE_TO_FILE) {
   saveBGCompanies(dbCompanies);
   saveBGPersons(DB_BG_FINAL);
-  saveBX24Persons(DB_BX_UPDATED);
+  saveBX24Persons(DB_BX_UPDATED); // 
 };
 
 

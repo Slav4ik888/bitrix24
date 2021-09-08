@@ -21,7 +21,7 @@ export const prepareClient = (client) => {
   preparedClient.ASSIGNED_BY_ID = 1;      // Назначенный ответственный
   preparedClient.CONTRACT = client.title; // Договор
   // preparedClient.PHONE = [{ VALUE: client?.phone || null }];
-  preparedClient.COMMENT = createComment(client);
+  preparedClient.COMMENTS = createComment(client);
   preparedClient.org = client.org;
 
   const address = addLocaliy(client); // Добавляем населённый пункт тем у кого отсутствует
