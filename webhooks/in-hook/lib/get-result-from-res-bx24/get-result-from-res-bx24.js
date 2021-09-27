@@ -20,13 +20,10 @@
  * // }
  */
 export const getResultFromResBx24 = (res) => {
-  console.log('Для обработки res: ', res);
-
   let arr = {};
 
   for (let key = 0; key < res.length; key++) {
     const objRes = res[key].result.result;
-    console.log('objRes: ', objRes);
 
     for (let objKey in objRes) {
       if (Object.prototype.hasOwnProperty.call(objRes, objKey)) {
@@ -35,7 +32,6 @@ export const getResultFromResBx24 = (res) => {
     }
   }
 
-  console.log(`ARR: `, arr);
   return arr;
-}
+};
 

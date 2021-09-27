@@ -1,5 +1,5 @@
 // BX24
-import { createReqList } from '../../lib/create-requests/create-req-list.js';
+import { createReqList } from '../../lib/creates/create-requests/create-req-list.js';
 import { createBatches, sendAllBatches } from '../batchs-hook.js';
 // Helpers
 import { showTimer } from '../../utils/timer/timer.js';
@@ -34,32 +34,40 @@ const prepareClientsForConnect = (clientsByCreatedCompanies, listContactIds) => 
 
 
 
-// Групповое объединение компаний с контактами
+/**
+ * Групповое объединение компаний с контактами
+ * @param {*} clientsByCreatedCompanies 
+ * @param {*} listContactIds 
+ */
 export async function companyGroupConnectWithContact(clientsByCreatedCompanies, listContactIds) {
-  console.log('listContactIds для соединения с компаниями: ', listContactIds);
+  try {
+    if (!listContactIds) {
+      console.log(`Нет компаний для соединения...`);
+      return;
+    }
+    console.log('listContactIds для соединения с компаниями: ', listContactIds);
 
-  const clientsForConnect = prepareClientsForConnect(clientsByCreatedCompanies, listContactIds);
+    const clientsForConnect = prepareClientsForConnect(clientsByCreatedCompanies, listContactIds);
 
-  // Создаём строки запроса по ORIGIN_ID
-  const reqList = createReqList(clientsForConnect, MethodType.COMPANY_CONTACT_ADD);
+    // Создаём строки запроса по ORIGIN_ID
+    const reqList = createReqList(clientsForConnect, MethodType.COMPANY_CONTACT_ADD);
   
-  // Делим по пачкам 50шт
-  const batches = createBatches(reqList, MethodType.COMPANY_CONTACT_ADD);
-  console.log('companyGroupConnectWithContact batches: ', batches);
+    // Делим по пачкам 50шт
+    const batches = createBatches(reqList, MethodType.COMPANY_CONTACT_ADD);
+    console.log('companyGroupConnectWithContact batches: ', batches);
 
-
-  // Обработка полученных результатов
-  const cbListResult = (res, timer) => {
-    setStorageData(StorageName.CONNECTED_RES, res);
-    console.log('CONNECTED_RES: ', res);
+    // Отправляем запрос
+    const { result, timer } = await sendAllBatches(batches);
+    setStorageData(StorageName.CONNECTED_RES, result);
+    console.log('CONNECTED_RES: ', result);
     showTimer(timer.calls);
 
-    const listResult = getResultFromResBx24(res);
-    setStorageData(StorageName.CONNECTED_LIST, res);
+    const listResult = getResultFromResBx24(result);
+    setStorageData(StorageName.CONNECTED_LIST, result);
     console.log('CONNECTED_LIST: ', listResult);
     // КОНЕЦ
   }
-
-  // Отправляем запрос
-  sendAllBatches(batches, cbListResult);
+  catch (e) {
+    console.log('e: ', e);
+  }
 }

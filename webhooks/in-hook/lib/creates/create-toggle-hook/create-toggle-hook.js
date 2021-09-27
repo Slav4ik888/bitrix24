@@ -1,6 +1,6 @@
-import { displayHookQueryForm } from '../display/display.js';
-import addUploadListener from '../data/add-upload-listener/index.js';
-import submit from '../../controllers/submit.js';
+import { displayHookQueryForm } from '../../display/display.js';
+import addUploadListener from '../../data/add-upload-listener/index.js';
+import submit from '../../../controllers/submit.js';
 
 
 

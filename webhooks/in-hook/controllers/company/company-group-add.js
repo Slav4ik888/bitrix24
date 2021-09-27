@@ -1,5 +1,5 @@
 // BX24
-import { createReqList } from '../../lib/create-requests/create-req-list.js';
+import { createReqList } from '../../lib/creates/create-requests/create-req-list.js';
 import { createBatches, sendAllBatches } from '../batchs-hook.js';
 // Helpers
 import { getResultFromResBx24 } from '../../lib/get-result-from-res-bx24/get-result-from-res-bx24.js';
@@ -12,32 +12,39 @@ import { StorageName, MethodType } from '../../types.js';
 
 
 // Групповое добавление компаний
-export async function companyGroupAdd(clearnedClients, callback) {
-  console.log(`Создаём компании: `, clearnedClients);
+export async function companyGroupAdd(clearnedClients) {
+  return new Promise(async function (resolve, reject) {
+    try {
+      if (!clearnedClients.length) {
+        console.log(`Нет компаний для создания...`);
+        return resolve([]);
+      }
+      console.log(`Создаём компании: `, clearnedClients);
 
-  // Создаём строки запроса по ORIGIN_ID
-  const reqList = createReqList(clearnedClients, MethodType.COMPANY_ADD);
+      // Создаём строки запроса по ORIGIN_ID
+      const reqList = createReqList(clearnedClients, MethodType.COMPANY_ADD);
   
-  // Делим по пачкам 50шт
-  const batches = createBatches(reqList, MethodType.COMPANY_ADD);
-  console.log('companyGroupAdd batches: ', batches);
+      // Делим по пачкам 50шт
+      const batches = createBatches(reqList, MethodType.COMPANY_ADD);
+      console.log('companyGroupAdd batches: ', batches);
 
+      // Отправляем запрос
+      const { result, timer } = await sendAllBatches(batches);
 
-  // Обработка полученных результатов
-  const cbListResult = (res, timer) => {
-    console.log('ADDED_COMPANIES_RES: ', res);
-    setStorageData(StorageName.ADDED_COMPANIES_RES, res);
-    showTimer(timer.calls);
+      console.log('ADDED_COMPANIES_RES: ', result);
+      setStorageData(StorageName.ADDED_COMPANIES_RES, result);
+      showTimer(timer.calls);
 
-    
-    const listCompanyIds = getResultFromResBx24(res);
-    setStorageData(StorageName.ADDED_COMPANIES_IDS, listCompanyIds);
-    console.log('ADDED_COMPANIES_IDS: ', listCompanyIds);
-    console.log(`length: `, objectLength(listCompanyIds));
-    
-    return callback(listCompanyIds);
-  }
-
-  // Отправляем запрос
-  sendAllBatches(batches, cbListResult);
+  
+      const listCompanyIds = getResultFromResBx24(result);
+      setStorageData(StorageName.ADDED_COMPANIES_IDS, listCompanyIds);
+      console.log('ADDED_COMPANIES_IDS: ', listCompanyIds);
+      console.log(`length: `, objectLength(listCompanyIds));
+  
+      return resolve(listCompanyIds);
+    }
+    catch (e) {
+      console.log('e: ', e);
+    }
+  })
 }

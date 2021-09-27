@@ -1,4 +1,5 @@
-import { MethodType } from '../../types.js';
+import { MethodType } from '../../../types.js';
+import { createFields } from './create-fields.js';
 import { createReqStrFromAllFields } from './create-req-str-from-all-fields.js';
 
 /**

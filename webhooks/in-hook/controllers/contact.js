@@ -3,9 +3,10 @@ import * as m from './contact-methods-bx24.js';
 
 
 
-/**
- * Возвращает набор полей для контакта
- */
+// Возвращает набор полей multifield полей
+export const multifieldFields = () => m.crmMultifieldFields();
+
+// Возвращает набор полей для контакта
 export const contactFields = () => m.crmContactFields();
 
 

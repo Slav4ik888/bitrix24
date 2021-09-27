@@ -2,7 +2,7 @@ export default {
   TEST_CREATE_CONTACT_WITH_PHONE: {
     description: {
       title: `Создать тестовый контакт с номером телефона`,
-      query: ``,
+      query: `test-create-contact-with-phone`,
     },
     query: ``,
     form: `<form class="form-hook-submit hook-item-content" name="test-create-contact-with-phone">
@@ -14,7 +14,7 @@ export default {
   TEST_CREATE_COMPANY_WITH_CONTACT: {
     description: {
       title: `Создать тестовую компанию с контактом`,
-      query: ``,
+      query: `test-create-company-with-contact`,
     },
     query: ``,
     form: `<form class="form-hook-submit hook-item-content" name="test-create-company-with-contact">
@@ -23,9 +23,22 @@ export default {
     status: true,
   },
 
+  TEST_GET_100_COMPANIES_AND_UPDATE: {
+    description: {
+      title: `Взять ~100 компаний и обновить их в Битриксе`,
+      query: `test-get-100-companies-and-update`,
+    },
+    query: ``,
+    form: `<form class="form-hook-submit hook-item-content" name="test-get-100-companies-and-update">
+            <input class="button file-upload" type="file" accept=".json" />
+            <input type="submit" class="file-upload-submit" disabled value="Создать" />
+          </form>`,
+    status: true,
+  },
+
   CREATE_GROUP_COMPANY_WITH_CONTACT: {
     description: {
-      title: `Создать группу компаний с контактами`,
+      title: `Создать в BX24 группу компаний с контактами`,
       query: `create-group-companies-with-contacts`,
     },
     query: ``,
@@ -163,7 +176,19 @@ export default {
     query: `crm.company.delete.json`,
     status: true,
   },
-  
+  // crm.multifield.fields
+  CRM_MULTIFIELD_FIELDS: {
+    description: {
+      title: `Получить набор полей multifield`,
+      query: `crm.multifield.fields`,
+    },
+    form: `<form class="form-hook-submit hook-item-content" name="crm-multifield-fields">
+            <input type="submit" value="Запросить" />
+          </form>`,
+    query: `crm.multifield.fields.json`,
+    status: true,
+  },
+
   CRM_COMPANY_CONTACT_FIELDS: {
     description: {
       title: `Получить набор полей контакта`,
@@ -178,7 +203,7 @@ export default {
 
   CRM_COMPANY_CONTACT_ADD: {
     description: {
-      title: `Связать контак с компанией`,
+      title: `Связать контакт с компанией`,
       query: `crm.company.contact.add`,
     },
     query: `crm.company.contact.add.json`,

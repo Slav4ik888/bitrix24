@@ -1,31 +1,16 @@
 // Functions
 import { displayListHTML } from './lib/display/display.js';
-import toggleHook from './lib/create-toggle-hook/create-toggle-hook.js';
+import toggleHook from './lib/creates/create-toggle-hook/create-toggle-hook.js';
 // Consts
-import hooksListArr from './lib/create-hooks-list/create-hooks-list.js';
+import hooksListArr from './lib/creates/create-hooks-list/create-hooks-list.js';
 
 
 // INITIALIZE
 const hooksContainer = document.querySelector(`.hooks-container`);
 const hooksList = document.querySelector(`.hooks-list`);
 
-// const spinnerContainer = document.querySelector(`.spinner-container`);
-// const spinner = document.querySelector(`.spinner`);
-// const spinnerText = document.querySelector(`.spinner-text`);
-
-// const errorContainer = document.querySelector(`.error-container`);
-// const errorCloseIcon = document.querySelector(`.error-close-icon`);
-// const errorContent = document.querySelector(`.error-content`);
-      
-// const resultContainer = document.querySelector(`.result-container`);
-// const resultCounter = document.querySelector(`.result-counter`);
-// const resultListContainer = document.querySelector(`.result-list-container`);
-
-
 
 hooksList.addEventListener(`click`, (e) => toggleHook(e.target));
-
-
 
 // Выводим список хуков
 displayListHTML(hooksContainer, hooksList, hooksListArr);
@@ -56,4 +41,4 @@ displayListHTML(hooksContainer, hooksList, hooksListArr);
 // Создаём новую компанию в Bitrix24 а если она есть то обновляем
 // crmCompanyAddOrUpdate("22", mocks.fieldsUpdate);
 
-// git add . && git commit -m "end createGroupCompaniesWithContacts" && git push origin master
+// git add . && git commit -m "refact update from bg" && git push origin master

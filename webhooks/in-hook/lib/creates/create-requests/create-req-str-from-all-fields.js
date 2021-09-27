@@ -1,4 +1,4 @@
-import { MethodType } from '../../types.js';
+import { MethodType } from '../../../types.js';
 
 /**
  * Возвращает строку запроса со всеми полями
@@ -10,8 +10,15 @@ import { MethodType } from '../../types.js';
 export const createReqStrFromAllFields = (item, method) => {
   let str = ``;
   switch (method) {
-    case MethodType.COMPANY_LIST: str = `filter[ORIGIN_ID]=${item.ORIGIN_ID}`; break;
+    case MethodType.COMPANY_LIST:
+    case MethodType.CONTACT_LIST: 
+      str = `filter[ORIGIN_ID]=${item.ORIGIN_ID}`;
+      break;
     
+    case MethodType.COMPANY_UPDATE:
+    case MethodType.CONTACT_UPDATE:
+      str = `id=${item.ID}`;
+
     case MethodType.COMPANY_ADD:
     case MethodType.CONTACT_ADD:
       for (let key in item) {
@@ -26,14 +33,10 @@ export const createReqStrFromAllFields = (item, method) => {
       }
       
       break;
-    
-    // case MethodType.COMPANY_UPDATE: str = `id=${item.ID}`; break;
 
     case MethodType.COMPANY_CONTACT_ADD: str = `id=${item.ID}&fields[CONTACT_ID]=${item.CONTACT_ID}&fields[IS_PRIMARY]=Y`;
       break;
   }
-
-  if (method === MethodType.COMPANY_CONTACT_ADD) console.log('str: ', str);
 
   return str;
 };

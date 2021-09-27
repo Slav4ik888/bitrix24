@@ -3,6 +3,24 @@ import { HOOK_URL, paramsPOST } from '../consts/consts.js';
 
 
 /**
+ * Получает существующий набор полей для multifield
+ * 
+ * @returns multifieldFields
+ */
+export async function crmMultifieldFields() {
+  try {
+    const response = await fetch(`${HOOK_URL}/crm.multifield.fields.json`);
+    const data = await response.json();
+    console.log('data: ', data);
+
+    return data.result;
+  }
+  catch (e) { console.log('e: ', e); console.error(e); return; }
+}
+
+
+
+/**
  * Получает существующий набор полей для контакта
  * 
  * @returns contactFields

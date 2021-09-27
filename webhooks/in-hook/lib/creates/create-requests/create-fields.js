@@ -1,5 +1,5 @@
 import { MethodType } from '../../../types.js';
-import { createFieldsForCompanyContactAdd } from '../../create-fields/create-fields.js';
+import { createFieldsForCompanyContactAdd } from '../create-fields/create-fields.js';
 
 
 /**
@@ -13,23 +13,25 @@ export const createFields = (item, method) => {
   let fields = {};
   
   switch (method) {
-    case MethodType.COMPANY_LIST: fields = { ORIGIN_ID: item.ORIGIN_ID }; break;
+    case MethodType.COMPANY_LIST:
+    case MethodType.CONTACT_LIST:
+      fields = { ORIGIN_ID: item.ORIGIN_ID };
+      break;
     
     case MethodType.COMPANY_ADD:
+    case MethodType.COMPANY_UPDATE:
       for (let key in item) {
         if (Object.prototype.hasOwnProperty.call(item, key)) {
           if (key !== `CONTACT`) fields[key] = item[key];
         }
       }
       break;
-    
-    // case MethodType.COMPANY_UPDATE: str = `id=${company.ID}`; break;
 
     case MethodType.CONTACT_ADD:
-      const contact = item.CONTACT;
-      for (let key in contact) {
-        if (Object.prototype.hasOwnProperty.call(contact, key)) {
-          fields[key] = contact[key];
+    case MethodType.CONTACT_UPDATE:
+      for (let key in item) {
+        if (Object.prototype.hasOwnProperty.call(item, key)) {
+          fields[key] = item[key];
         }
       }
       fields.ORIGIN_ID = item.ORIGIN_ID;

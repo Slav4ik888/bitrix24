@@ -3,7 +3,7 @@ import * as com from './company.js';
 import * as c from './company-methods-bx24.js';
 import * as cli from './contact.js';
 // Functions
-import * as field from '../lib/create-fields/create-fields.js';
+import * as field from '../lib/creates/create-fields/create-fields.js';
 
 
 

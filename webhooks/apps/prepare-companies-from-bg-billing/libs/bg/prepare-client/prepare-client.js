@@ -4,6 +4,7 @@ import { getLocality } from '../get-locality/get-locality.js';
 import { validateClient } from '../../../validators/validate-client/validate-client.js';
 import { createComment } from '../../create-comment/create-comment.js';
 import { getFio } from '../../../utils/get-fio/get-fio.js';
+import { getPhones } from '../get-phones/get-phones.js';
 import { Status } from '../../../types/types-require.js';
 
 
@@ -16,35 +17,36 @@ import { Status } from '../../../types/types-require.js';
 export const prepareClient = (client) => {
   let preparedClient = {};
 
-  preparedClient.ORIGIN_ID = client.id;
-  preparedClient.CREATED_BY_ID = 1;       // Кто создал 1 - Корзан Вячеслав
-  preparedClient.ASSIGNED_BY_ID = 1;      // Назначенный ответственный
-  preparedClient.CONTRACT = client.title; // Договор
+  preparedClient.ORIGIN_ID              = client.id;
+  preparedClient.CREATED_BY_ID          = 1;       // Кто создал 1 - Корзан Вячеслав
+  preparedClient.ASSIGNED_BY_ID         = 1;      // Назначенный ответственный
+  preparedClient.CONTRACT               = client.title; // Договор
   // preparedClient.PHONE = [{ VALUE: client?.phone || null }];
-  preparedClient.COMMENTS = createComment(client);
-  preparedClient.org = client.org;
+  // preparedClient.COMMENTS               = createComment(client);
+  preparedClient.org                    = client.org;
 
-  const address = addLocaliy(client); // Добавляем населённый пункт тем у кого отсутствует
+  const address  = addLocaliy(client); // Добавляем населённый пункт тем у кого отсутствует
   const locality = getLocality(address); // Оставляем только название населённого пункта
   
-  preparedClient.LOCALITY = locality;
+  preparedClient.LOCALITY               = locality;
 
   // Создаём название
   const result = createCompanyTitleByAddressFio(locality, client.fio);
-  preparedClient.TITLE = result.title;
-  preparedClient.statusTitle = Status.VALID;
+  preparedClient.TITLE                  = result.title;
+  preparedClient.statusTitle            = Status.VALID;
 
   // Добавляем поля для создания "Контакта" в BX24
-  preparedClient.CONTACT = {};
-  preparedClient.CONTACT.ADDRESS = address;
+  preparedClient.CONTACT                = {};
+  preparedClient.CONTACT.ORIGIN_ID      = client.id;
+  preparedClient.CONTACT.ADDRESS        = address;
   
-  const { LAST_NAME, NAME, SECOND_NAME } = getFio(client.fio);
-  preparedClient.CONTACT.NAME = NAME;
-  preparedClient.CONTACT.LAST_NAME = LAST_NAME;
-  preparedClient.CONTACT.SECOND_NAME = SECOND_NAME
+  // const { LAST_NAME, NAME, SECOND_NAME } = getFio(client.fio);
+  preparedClient.CONTACT.NAME           = client.firstname; // Имя
+  preparedClient.CONTACT.LAST_NAME      = client.lastname;  // Фамилия
+  preparedClient.CONTACT.SECOND_NAME    = client.midname;   // Отчество
   
-  preparedClient.CONTACT.PHONE = [{ VALUE: client?.phone || null }];
-  preparedClient.CONTACT.CREATED_BY_ID = 1; 
+  preparedClient.CONTACT.PHONE          = getPhones(client.phones); // [{ VALUE: client?.phone || null }];
+  preparedClient.CONTACT.CREATED_BY_ID  = 1; 
   preparedClient.CONTACT.ASSIGNED_BY_ID = 1; 
 
   const {valid, errors} = validateClient(client);

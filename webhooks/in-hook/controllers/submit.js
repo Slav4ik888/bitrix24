@@ -2,10 +2,11 @@ import * as f from './forms.js';
 import * as com from './company.js';
 import * as c from './company-methods-bx24.js';
 import * as cli from './contact.js';
-import { createNewCompanyWithContact } from '../lib/create-new-company-with-contact/create-new-company-with-contact.js';
-import { createGroupCompaniesWithContacts } from '../lib/create-group-companies-with-contacts/create-group-companies-with-contacts.js';
+import { createNewCompanyWithContact } from '../lib/creates/create-new-company-with-contact/create-new-company-with-contact.js';
+import { startCreateGroupCompaniesWithContacts } from '../lib/creates/create-group-companies-with-contacts/create-group-companies-with-contacts.js';
 import { createContactWithPhone } from '../tests/create-contact-with-phone.js';
-
+// Tests
+import { update100Companies } from '../tests/update-100-companies.js';
 
 
 const checkResult = (data) => {
@@ -67,8 +68,13 @@ export default async function (e) {
     case 'test-create-company-with-contact':
       result = await createNewCompanyWithContact(mockCompanyData); break;
 
+    case 'test-get-100-companies-and-update':
+      result = await update100Companies(); break;
+    
+    
+    // PRODACTION
     case 'create-group-companies-with-contacts':
-      result = await createGroupCompaniesWithContacts(); break;
+      result = await startCreateGroupCompaniesWithContacts(); break;
     
     
     // COMPANY
@@ -98,6 +104,9 @@ export default async function (e) {
       result = await f.companyDelete(form); break;
     
     // CONTACTS
+    
+    case 'crm-multifield-fields':
+      result = await cli.multifieldFields(); break;
     
     case 'crm-contact-fields':
       result = await cli.contactFields(); break;

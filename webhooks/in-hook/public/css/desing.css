@@ -1,0 +1,30 @@
+.article-page-block__content-wrapper {
+  min-width: 804px;
+  max-width: 1037px;
+  padding-left: 12px;
+  padding-right: 268px;
+  font: inherit;
+}
+
+.article-page-block__content-wrapper .reminder {
+  position: relative;
+  margin: 53px -333px 39px -62px;
+  padding: 90px 320px 60px 62px;
+  background-color: #e1eaf7;
+  background: linear-gradient(
+        182.6deg,
+        transparent,
+        rgba(225, 234, 247, 0) 60px,
+        #e1eaf7 calc(60px + 1px)
+      )
+      left,
+    linear-gradient(
+        182.5deg,
+        transparent,
+        rgba(225, 234, 247, 0) 45px,
+        #e1eaf7 calc(45px + 1px)
+      )
+      right;
+  background-repeat: no-repeat;
+  background-size: 90% 100%;
+}

@@ -1,5 +1,5 @@
-import * as com from '../../controllers/company.js';
-import * as cli from '../../controllers/contact.js';
+import * as com from '../../../controllers/company.js';
+import * as cli from '../../../controllers/contact.js';
 import { createRequestFields, createFieldsForCompanyContactAdd } from '../create-fields/create-fields.js';
 
 export async function createNewCompanyWithContact(newCompanyData) {

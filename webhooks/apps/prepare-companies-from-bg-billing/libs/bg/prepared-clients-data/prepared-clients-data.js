@@ -31,7 +31,7 @@ const findCurrentAddressInFirstWord = (regExpArr,  title) => {
 /**
  * Создаём объекты для всех клиентов, для помещения их в Битрикс
  * @param {array} db - исходные данные из BGbilling
- * @param {number} limit_clients 
+ * @param {number} limit_clients - на время тестирования
  * @returns {counts: { countAll, countValid, countInvalid }, DB_BG_PERSONS, dbInvalidClients}
  */
 export const prepareClientsData = (db, limit_clients) => {

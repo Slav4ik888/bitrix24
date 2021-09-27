@@ -10,7 +10,7 @@ export const addLocaliy = (item) => {
   rules.forEach(regexp => {
     if (regexp.f.test(item.id)) {
       locality = regexp.r;
-      console.log('locality: ', locality);
+      // console.log('locality: ', locality);
     }
   });
 

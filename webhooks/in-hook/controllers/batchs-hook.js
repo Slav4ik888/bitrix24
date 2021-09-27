@@ -143,42 +143,51 @@ async function sendOneBatch(batchItems, key, timer) {
 
 
 // Отправляем все batches to BX24
-export async function sendAllBatches(batches, cbResultFunc) {
-  console.log(`Start send all batches: `, batches);
+export async function sendAllBatches(batches) {
+  return new Promise(function (resolve, reject) {
+    try {
+      console.log(`Start send all batches: `, batches);
 
-  let result = [];
-  let loadedKeys = {};
-  console.log('loadedKeys: ', loadedKeys);
-  let timer = createTimer(); // Время промежуточных циклов
+      let result = [];
+      let loadedKeys = {};
+      let timer = createTimer(); // Время промежуточных циклов
 
 
-  const callback = (res) => {
-    timer(`callback start`);
-    const loadedKeysRes = isDataLoaded(loadedKeys);
-    console.log('callback: ', loadedKeysRes);
-    result.push(res);
-
-    if (loadedKeysRes) cbResultFunc(result, timer);
-  };
-
-  const setDelay = (key) => {
-    timer(`setDelay: ${key}`);
-
-    setTimeout(async () => {
-      timer(`setTimeout ${key}`);
-      console.log(`setDelay `, key);
-
-      const res = await sendOneBatch(batches[key], key, timer);
-      loadedKeys[key].loaded = true;
-
-      callback(res);
-    }, 1500 * key);
-  }
-
-  for (let key = 0; key < batches.length; key++) {
-    timer(`for batches: ${key}`)
+      for (let key = 0; key < batches.length; key++) {
+        timer(`for batches: ${key}`)
     
-    addLoadedKey(loadedKeys, key); // Добавляем ключ для проверки
-    setDelay(key);
-  }
+        addLoadedKey(loadedKeys, key); // Добавляем ключ для проверки
+        setDelay(key);
+      }
+
+      function setDelay(key) {
+        timer(`setDelay: ${key}`);
+
+        setTimeout(async () => {
+          timer(`setTimeout ${key}`);
+          console.log(`setDelay `, key);
+
+          const res = await sendOneBatch(batches[key], key, timer);
+          loadedKeys[key].loaded = true;
+
+          callback(res);
+        }, 1500 * key);
+      }
+
+
+      function callback(res) {
+        timer(`callback start`);
+        const loadedKeysRes = isDataLoaded(loadedKeys);
+        console.log('callback: ', loadedKeysRes);
+        result.push(res);
+
+        if (loadedKeysRes) return resolve({ result, timer });
+      };
+
+    }
+    catch (e) {
+      console.log('e: ', e);
+      reject(e)
+    }
+  });
 };

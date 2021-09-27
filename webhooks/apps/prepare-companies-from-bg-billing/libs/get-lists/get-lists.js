@@ -45,14 +45,16 @@ export const getSetCompanyTitleList = (arrClientData) => {
  * @param {Object} list 
  * @returns {Array}
  */
-export const getArrayFromList = list => {
+export const getArrayFromList = (list) => {
   let arr = [];
+
   for (let key in list) {
     let obj = {};
     obj = cloneObj(list[key]);
     obj.id = key;
     arr.push(obj);
   }
+
   return arr;
 };
 
@@ -70,6 +72,8 @@ export const getSetAddressList = (arrClientData) => {
   });
 
   const setList = getSetList(addressList);
-
-  return getArrayFromList(setList).sort();
+  let sortedArr = [];
+  setList.forEach((value) => sortedArr.push(value));
+  
+  return sortedArr.sort();
 };

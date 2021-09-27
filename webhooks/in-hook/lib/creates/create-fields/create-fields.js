@@ -22,7 +22,7 @@ export const createFieldsForCompanyUpdate = ({ TITLE, COMMENTS, ADDRESS, PHONE: 
   "TITLE": TITLE, // Название компании
   "COMMENTS": COMMENTS,
   "ADDRESS": ADDRESS,
-  PHONE: [{ VALUE: PHONE }],
+  "PHONE": [{ VALUE: PHONE }],
   "CREATED_BY_ID": CREATED_BY_ID,     // Кто создал 1 - Корзан Вячеслав
   "ASSIGNED_BY_ID": ASSIGNED_BY_ID
 });
