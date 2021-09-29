@@ -31,7 +31,7 @@ export const prepareClient = (client) => {
   preparedClient.LOCALITY               = locality;
 
   // Создаём название
-  const result = createCompanyTitleByAddressFio(locality, client.fio);
+  const result = createCompanyTitleByAddressFio(locality, client);
   preparedClient.TITLE                  = result.title;
   preparedClient.statusTitle            = Status.VALID;
 
