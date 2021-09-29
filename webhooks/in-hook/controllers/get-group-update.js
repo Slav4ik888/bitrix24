@@ -27,15 +27,13 @@ export async function groupUpdate(clearnedClients, method) {
 
       console.log('UPDATED_RES: ', result);
       const storeName = getStorageResByMethod(method);
-      console.log('STORAGE: ', storeName);
       setStorageData(storeName, result);
       // showTimer(timer.calls);
 
   
       const listCompanyIds = getResultFromResBx24(result);
       setStorageData(getStorageIdsByMethod(method), listCompanyIds);
-      console.log('UPDATED_IDS: ', listCompanyIds);
-      console.log(`length: `, objectLength(listCompanyIds));
+      console.log(`UPDATED: `, objectLength(listCompanyIds));
   
       return resolve(listCompanyIds);
     }

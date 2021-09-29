@@ -17,6 +17,7 @@ function readFile(e, callback) {
     callback(fileContent);
   }
 
+  if (!selectedFile) return;
   reader.readAsText(selectedFile);
 }
 

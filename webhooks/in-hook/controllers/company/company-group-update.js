@@ -3,7 +3,7 @@ import { MethodType } from '../../types.js';
 
 // Групповое обновление компаний
 export async function companyGroupUpdate(companies) {
-  console.log(`Обновляем компании: `, companies);
+  console.log(`UPDATE COMPANIES: `, companies);
 
   return groupUpdate(companies, MethodType.COMPANY_UPDATE);
 };

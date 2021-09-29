@@ -23,31 +23,19 @@ export default {
     status: true,
   },
 
-  TEST_GET_100_COMPANIES_AND_UPDATE: {
+  CREATE_AND_UPDATE_COMPANIES_WITH_CONTACTS: {
     description: {
-      title: `Взять ~100 компаний и обновить их в Битриксе`,
-      query: `test-get-100-companies-and-update`,
+      title: `Создать новые и обновить существующие в BX24`,
+      query: `create-and-update-companies-with-contacts`,
     },
     query: ``,
-    form: `<form class="form-hook-submit hook-item-content" name="test-get-100-companies-and-update">
+    form: `<form class="form-hook-submit hook-item-content" name="create-and-update-companies-with-contacts">
             <input class="button file-upload" type="file" accept=".json" />
             <input type="submit" class="file-upload-submit" disabled value="Создать" />
           </form>`,
     status: true,
   },
-
-  CREATE_GROUP_COMPANY_WITH_CONTACT: {
-    description: {
-      title: `Создать в BX24 группу компаний с контактами`,
-      query: `create-group-companies-with-contacts`,
-    },
-    query: ``,
-    form: `<form class="form-hook-submit hook-item-content" name="create-group-companies-with-contacts">
-            <input class="button file-upload" type="file" accept=".json" />
-            <input type="submit" class="file-upload-submit" disabled value="Создать" />
-          </form>`,
-    status: true,
-  },
+  
 
   CRM_COMPANY_FIELD: {
     description: {

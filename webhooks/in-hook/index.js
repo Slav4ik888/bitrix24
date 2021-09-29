@@ -41,4 +41,4 @@ displayListHTML(hooksContainer, hooksList, hooksListArr);
 // Создаём новую компанию в Bitrix24 а если она есть то обновляем
 // crmCompanyAddOrUpdate("22", mocks.fieldsUpdate);
 
-// git add . && git commit -m "refact update from bg" && git push origin master
+// git add . && git commit -m "end refact update from bg" && git push origin master

@@ -7,6 +7,5 @@
  */
 export function getDataByFieldAndValue(arr, field, value) {
   const filtred = arr.filter((obj) => obj[field] === value);
-
-  return filtred.slice(0, 3);
+  return filtred;
 }

@@ -15,7 +15,7 @@ input {
   flex-direction: column;
   /* justify-content: space-between; */
   width: 100%;
-  max-width: 800px;
+  max-width: 1000px;
   margin: auto;
 }
 

@@ -6,11 +6,11 @@ import { createNewCompanyWithContact } from '../lib/creates/create-new-company-w
 import { startCreateGroupCompaniesWithContacts } from '../lib/creates/create-group-companies-with-contacts/create-group-companies-with-contacts.js';
 import { createContactWithPhone } from '../tests/create-contact-with-phone.js';
 // Tests
-import { update100Companies } from '../tests/update-100-companies.js';
+import { createAndUpdateCompaniesWithContacts } from './create-and-update-companies-with-contacts.js';
 
 
 const checkResult = (data) => {
-  console.log('checkResult: ', data);
+  if (data) console.log('checkResult: ', data);
 
   if (data?.result) return data.result;
   if (data) return data; // На тот случай когда
@@ -56,7 +56,7 @@ const mockCompanyData = {
 export default async function (e) {
   e.preventDefault();
   const hookQuery = e.target.name; // .replace(/-/g,".");
-  console.log('hookQuery: ', hookQuery);
+  console.log('Запрос: ', hookQuery);
   const form = e.target;
 
   let result;
@@ -68,14 +68,10 @@ export default async function (e) {
     case 'test-create-company-with-contact':
       result = await createNewCompanyWithContact(mockCompanyData); break;
 
-    case 'test-get-100-companies-and-update':
-      result = await update100Companies(); break;
-    
     
     // PRODACTION
-    case 'create-group-companies-with-contacts':
-      result = await startCreateGroupCompaniesWithContacts(); break;
-    
+    case 'create-and-update-companies-with-contacts':
+      result = await createAndUpdateCompaniesWithContacts(); break;
     
     // COMPANY
 
@@ -124,7 +120,7 @@ export default async function (e) {
   }
 
 
-  console.log(checkResult(result));
+  if (result) console.log(checkResult(result));
 
   return;
 };

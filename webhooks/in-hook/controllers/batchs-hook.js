@@ -133,8 +133,7 @@ async function sendOneBatch(batchItems, key, timer) {
     const companyData = await response.json();
     timer(`sendOneBatch ${key} end: `);
 
-    console.log('Res companyData: ', companyData);
-    console.log(`[${key}] batch.json - successfully!`);
+    console.log(`Res [${key}] batch.json - successfully`, companyData);
     return companyData;
   }
   catch (e) { console.log('e: ', e); }
@@ -165,7 +164,6 @@ export async function sendAllBatches(batches) {
 
         setTimeout(async () => {
           timer(`setTimeout ${key}`);
-          console.log(`setDelay `, key);
 
           const res = await sendOneBatch(batches[key], key, timer);
           loadedKeys[key].loaded = true;
@@ -178,7 +176,6 @@ export async function sendAllBatches(batches) {
       function callback(res) {
         timer(`callback start`);
         const loadedKeysRes = isDataLoaded(loadedKeys);
-        console.log('callback: ', loadedKeysRes);
         result.push(res);
 
         if (loadedKeysRes) return resolve({ result, timer });
@@ -187,7 +184,6 @@ export async function sendAllBatches(batches) {
     }
     catch (e) {
       console.log('e: ', e);
-      reject(e)
     }
   });
 };

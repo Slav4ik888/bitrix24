@@ -17,7 +17,7 @@ export function getGroupList(readedData, method) {
 
       // Отправляем запрос
       const { result, timer } = await sendAllBatches(batches);
-      showTimer(timer.calls);
+      // showTimer(timer.calls);
 
       const сlients = getExistingClients(result);
       return resolve(сlients);

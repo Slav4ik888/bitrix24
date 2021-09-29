@@ -4,6 +4,7 @@ import { createBatches, sendAllBatches } from '../batchs-hook.js';
 // Helpers
 import { showTimer } from '../../utils/timer/timer.js';
 import { getResultFromResBx24 } from '../../lib/get-result-from-res-bx24/get-result-from-res-bx24.js';
+import { objectLength } from '../../utils/objects/objects.js';
 // Data
 import { setStorageData } from '../../utils/data/local-storage.js';
 // Types
@@ -20,7 +21,7 @@ export async function contactGroupAdd(clearnedClients) {
         return resolve([]);
       }
       
-      console.log(`Создаём контакты: `, clearnedClients);
+      console.log(`CREATE CONTACTS: `, clearnedClients);
 
       // Создаём строки запроса по ORIGIN_ID
       const reqList = createReqList(clearnedClients, MethodType.CONTACT_ADD);
@@ -32,15 +33,15 @@ export async function contactGroupAdd(clearnedClients) {
 
       // Отправляем запрос
       const { result, timer } = await sendAllBatches(batches);
+      console.log('ADDED_CONTACTS_RES: ', result);
       
       // Обработка полученных результатов
-      console.log('ADDED_CONTACTS_RES: ', result);
       setStorageData(StorageName.ADDED_CONTACTS_RES, result);
-      showTimer(timer.calls);
+      // showTimer(timer.calls);
 
       const listContactIds = getResultFromResBx24(result);
       setStorageData(StorageName.ADDED_CONTACTS_IDS, listContactIds);
-      console.log('ADDED_CONTACTS_IDS: ', listContactIds);
+      console.log(`ADDED: `, objectLength(listContactIds));
     
 
       return resolve({ clearnedClients, listContactIds });

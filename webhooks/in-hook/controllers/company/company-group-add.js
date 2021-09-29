@@ -19,7 +19,7 @@ export async function companyGroupAdd(clearnedClients) {
         console.log(`Нет компаний для создания...`);
         return resolve([]);
       }
-      console.log(`Создаём компании: `, clearnedClients);
+      console.log(`CREATE COMPANIES: `, clearnedClients);
 
       // Создаём строки запроса по ORIGIN_ID
       const reqList = createReqList(clearnedClients, MethodType.COMPANY_ADD);
@@ -33,13 +33,12 @@ export async function companyGroupAdd(clearnedClients) {
 
       console.log('ADDED_COMPANIES_RES: ', result);
       setStorageData(StorageName.ADDED_COMPANIES_RES, result);
-      showTimer(timer.calls);
+      // showTimer(timer.calls);
 
   
       const listCompanyIds = getResultFromResBx24(result);
       setStorageData(StorageName.ADDED_COMPANIES_IDS, listCompanyIds);
-      console.log('ADDED_COMPANIES_IDS: ', listCompanyIds);
-      console.log(`length: `, objectLength(listCompanyIds));
+      console.log(`ADDED: `, objectLength(listCompanyIds));
   
       return resolve(listCompanyIds);
     }

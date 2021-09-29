@@ -4,6 +4,7 @@ import { createBatches, sendAllBatches } from '../batchs-hook.js';
 // Helpers
 import { showTimer } from '../../utils/timer/timer.js';
 import { getResultFromResBx24 } from '../../lib/get-result-from-res-bx24/get-result-from-res-bx24.js';
+import { objectLength } from '../../utils/objects/objects.js';
 // Data
 import { setStorageData } from '../../utils/data/local-storage.js';
 // Types
@@ -45,7 +46,7 @@ export async function companyGroupConnectWithContact(clientsByCreatedCompanies, 
       console.log(`Нет компаний для соединения...`);
       return;
     }
-    console.log('listContactIds для соединения с компаниями: ', listContactIds);
+    console.log('CONNECT listContactIds для соединения с компаниями: ', listContactIds);
 
     const clientsForConnect = prepareClientsForConnect(clientsByCreatedCompanies, listContactIds);
 
@@ -60,11 +61,11 @@ export async function companyGroupConnectWithContact(clientsByCreatedCompanies, 
     const { result, timer } = await sendAllBatches(batches);
     setStorageData(StorageName.CONNECTED_RES, result);
     console.log('CONNECTED_RES: ', result);
-    showTimer(timer.calls);
+    // showTimer(timer.calls);
 
     const listResult = getResultFromResBx24(result);
     setStorageData(StorageName.CONNECTED_LIST, result);
-    console.log('CONNECTED_LIST: ', listResult);
+    console.log(`CONNECTED: `, objectLength(listResult));
     // КОНЕЦ
   }
   catch (e) {
