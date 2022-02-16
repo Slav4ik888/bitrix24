@@ -7,7 +7,7 @@ import { startCreateGroupCompaniesWithContacts } from '../lib/creates/create-gro
 import { createContactWithPhone } from '../tests/create-contact-with-phone.js';
 // Tests
 import { createAndUpdateCompaniesWithContacts } from './create-and-update-companies-with-contacts.js';
-
+import { testConnectContactsWithCompanies } from './connect-contacts-companies.js';
 
 const checkResult = (data) => {
   if (data) console.log('checkResult: ', data);
@@ -68,13 +68,14 @@ export default async function (e) {
     case 'test-create-company-with-contact':
       result = await createNewCompanyWithContact(mockCompanyData); break;
 
+    case 'test-connect-contacts-with-companies':
+      result = await testConnectContactsWithCompanies(); break;
     
     // PRODACTION
     case 'create-and-update-companies-with-contacts':
       result = await createAndUpdateCompaniesWithContacts(); break;
     
     // COMPANY
-
     case 'crm-company-fields':
       result = await c.companyFields(); break;
     
@@ -98,6 +99,15 @@ export default async function (e) {
     
     case 'crm-company-delete':
       result = await f.companyDelete(form); break;
+
+    // COMPANY USERFIELDS
+
+    case 'crm.userfield.fields':
+      result = await c.crmCompanyUserfields(); break;
+    
+    case 'crm.company.userfield.add':
+      result = await f.companyUserfields(form); break;
+    
     
     // CONTACTS
     

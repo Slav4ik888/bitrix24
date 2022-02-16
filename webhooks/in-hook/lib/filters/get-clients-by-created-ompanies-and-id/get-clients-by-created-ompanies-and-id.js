@@ -2,7 +2,12 @@
  * Отбираем из общего списка те компаний, по которым вернулся ответ об их успешном создании
  * 
  * @param {Array} readedData - изначальный загруженный список
- * @param {preudo Array<{}>} listIds - список companies id
+ * @param {pseudo Array<{}>} listIds - список created companies ids
+ * {
+ *    'ORIGIN_ID_1013': 5123,
+ *    'ORIGIN_ID_1014': 5125,
+ *    'ORIGIN_ID_1015': 5127,
+ * }
  */
 export const getClientsByCreatedCompaniesAndId = (readedData, listIds) => {
   let result = [];

@@ -3,8 +3,6 @@ import addUploadListener from '../../data/add-upload-listener/index.js';
 import submit from '../../../controllers/submit.js';
 
 
-
-
 /**
  * Открывает новый нажатый хук и закрывает предыдущий
  * и запускает ф-ю вывода формы для нажатого хука

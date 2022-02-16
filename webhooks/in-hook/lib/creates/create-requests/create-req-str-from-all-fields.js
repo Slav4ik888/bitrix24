@@ -25,7 +25,7 @@ export const createReqStrFromAllFields = (item, method) => {
         if (Object.prototype.hasOwnProperty.call(item, key)) {
           if (str) str += `&`; // Для первого элемента значок не ставим
           if (key === `PHONE`) {
-            str += `fields[${key}][0][VALUE]=${item.PHONE[0].VALUE}`;
+            str += `fields[${key}][0][VALUE]=${item.PHONE[0]?.VALUE}`;
             // str += `fields%5B${key}%5D%5B0%5D%5BVALUE%5D=${item.PHONE[0].VALUE}`;
           }
           else str += `fields[${key}]=${item[key]}`;

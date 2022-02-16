@@ -23,6 +23,19 @@ export default {
     status: true,
   },
 
+  TEST_CONNECT_CONTACTS_WITH_COMPANIES: {
+    description: {
+      title: `Проверить и соединить контакты с компаниями`,
+      query: `test-connect-contacts-with-companies`,
+    },
+    query: ``,
+    form: `<form class="form-hook-submit hook-item-content" name="test-connect-contacts-with-companies">
+            <input class="button file-upload" type="file" accept=".json" />
+            <input type="submit" class="file-upload-submit" disabled value="Создать" />
+          </form>`,
+    status: true,
+  },
+
   CREATE_AND_UPDATE_COMPANIES_WITH_CONTACTS: {
     description: {
       title: `Создать новые и обновить существующие в BX24`,
@@ -209,6 +222,35 @@ export default {
           </form>`,
     status: true,
   },
+
+  CRM_COMPANY_USERFIELD: {
+    description: {
+      title: `Получить список пользовательских полей компании`,
+      query: `crm.userfield.fields`,
+    },
+    query: `crm.userfield.fields`,
+    form: `<form class="form-hook-submit hook-item-content" name="crm.userfield.fields">
+            <input type="submit" value="Получить" />
+          </form>`,
+    status: true,
+  },
+
+  CRM_COMPANY_USERFIELD_ADD: {
+    description: {
+      title: `Создать пользовательское поле компании`,
+      query: `crm.company.userfield.add`,
+    },
+    query: `crm.company.userfield.add`,
+    form: `<form class="form-hook-submit hook-item-content" name="crm.company.userfield.add">
+              <div class="input-block">
+                <span class="label">Название поля:</span>
+                <input type="string" name="USERFIELD" required />
+              </div>
+              <input type="submit" value="Создать" />
+            </form>`,
+    status: true,
+  },
+  
 
   CRM_CONTACT_FIELDS: {
     description: {

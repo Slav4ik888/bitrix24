@@ -15,6 +15,7 @@ export async function companyFields(params) {
 };
 
 
+
 /**
  * Запрашиваем и получаем список компаний по запрошенным данным (например ORIGIN_ID)
  * 
@@ -206,15 +207,34 @@ export async function crmCompanyContactFields() {
 // }
 
 
-// async function hookStr(method, str) {
-//   try {
-//     console.log(`${HOOK_URL}/${method}.json?` + str);
+// Возвращает список пользовательских полей компании
+export async function crmCompanyUserfields() {
+  try {
+    // paramsPOST.body = JSON.stringify();
 
-//     const res = await axios.get(`${HOOK_URL}/${method}.json?` + str);
+    const response = await fetch(`${HOOK_URL}/crm.userfield.fields.json`);
+    const companyData = await response.json();
 
-//     console.log(method, `return Ok!`);
+    return companyData.result;
+  }
+  catch (e) { console.log('e: ', e); console.error(e); return }
+};
 
-//   } catch (e) {
-//     console.log('e: ', e.data());
-//   }
-// }
+
+
+// crm.company.userfield.add
+// Создаёт пользовательское поле для компании
+export async function crmCompanyUserFieldsAdd(fields) {
+  console.log('fields: ', fields);
+
+  try {
+    paramsPOST.body = JSON.stringify({ fields });
+    console.log('paramsPOST.body: ', paramsPOST.body);
+
+    const response = await fetch(`${HOOK_URL}/crm.company.userfield.add.json`, paramsPOST);
+    const companyData = await response.json();
+    
+    return companyData;
+  }
+  catch (e) { console.log('e: ', e); console.error(e); return}
+}

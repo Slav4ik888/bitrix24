@@ -70,3 +70,14 @@ export const createRequestFields = ({ ORIGIN_ID }) => ({
     "ORIGIN_ID": ORIGIN_ID,
   },
 });
+
+
+/**
+ * Возвращает объект для создания пользовательского поля
+ * @param {string} USERFIELD_NAME
+ * @returns 
+ */
+export const createFieldsForCompanyUserfieldsAdd = (USERFIELD_NAME) => ({
+  FIELD_NAME: USERFIELD_NAME,
+  USER_TYPE_ID: "string"
+});

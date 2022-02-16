@@ -121,3 +121,15 @@ export const contactDelete = (form) => {
   const contactId = form.contactId.value;
   return cli.contactDelete(contactId);
 };
+
+
+
+export const companyUserfields = (form) => {
+  const USERFIELD = form.USERFIELD.value || "";
+
+  if (!USERFIELD) return console.log(`Не заполнено поле USERFIELD`);
+  
+  const fields = field.createFieldsForCompanyUserfieldsAdd(USERFIELD);
+
+  return c.crmCompanyUserFieldsAdd(fields);
+};

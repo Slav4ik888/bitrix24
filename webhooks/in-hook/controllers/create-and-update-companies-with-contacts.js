@@ -25,8 +25,8 @@ export async function createAndUpdateCompaniesWithContacts() {
   
     // Отбираем ~100 компаний из файла данных
     // const readedData = getDataByFieldAndValue(data, `LOCALITY`, `Тальники`);
-    // const readedData = data.slice(0, 200);
-    console.log('Всего будет обработано: ', readedData);
+    // const readedData = data.slice(0, 3);
+    // console.log('Всего будет обработано: ', readedData);
 
 
     // Делаем запрос по всем компаниям и получаем результат о наличии ORIGIN_ID
