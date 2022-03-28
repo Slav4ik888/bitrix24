@@ -335,4 +335,43 @@ export default {
     query: `crm.contact.delete.json`,
     status: true,
   },
+
+  BUSINESS_PROCESS_LIST: {
+    description: {
+      title: `Получить список БП`,
+      query: `business-process-list`,
+    },
+    query: `bizproc.workflow.template.list`,
+    form: `<form class="form-hook-submit hook-item-content" name="business-process-list">
+            <input type="submit" value="Получить" />
+          </form>`,
+    status: true,
+  },
+
+  BUSINESS_PROCESS_START: {
+    description: {
+      title: `Запустить БП проверка качества Badcom`,
+      query: `business-process-start-badcom`,
+    },
+    query: `bizproc.workflow.start.json`,
+    form: `<form class="form-hook-submit hook-item-content" name="business-process-start-badcom">
+            <div class="input-block">
+              <span class="label">Id Отв. за проверку качества:</span>
+              <input type="number" name="OTV_QUALITY" />
+            </div>
+            <div class="input-block">
+              <span class="label">Id company:</span>
+              <input type="number" name="COMPANY_ID" />
+            </div>
+            <div class="input-block">
+              <span class="label">Новый абонент (да/нет):</span>
+              <select name="IS_NEW_SUBSCRIBER">
+                <option value="yes" selected>Yes</option>
+                <option value="no">No</option>
+              </select>
+            </div>
+            <input type="submit" value="Запустить" />
+          </form>`,
+    status: true,
+  },
 };

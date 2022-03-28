@@ -81,3 +81,16 @@ export const createFieldsForCompanyUserfieldsAdd = (USERFIELD_NAME) => ({
   FIELD_NAME: USERFIELD_NAME,
   USER_TYPE_ID: "string"
 });
+
+
+
+export const createFieldsForBusinessProcessList = () => ({
+  select: ['ID', 'MODULE_ID', 'ENTITY', 'DOCUMENT_TYPE', 'AUTO_EXECUTE', 'NAME', 'TEMPLATE', 'PARAMETERS', 'VARIABLES', 'CONSTANTS',	'MODIFIED',	'IS_MODIFIED',	'USER_ID',	'SYSTEM_CODE']
+});
+
+
+export const createFieldsForBusinessProcessStart = () => ({
+  TEMPLATE_ID: 189, // Id business process
+  // DOCUMENT_ID: ['lists', 'BizprocDocument', `iblock_53`],
+  PARAMETERS: null
+});

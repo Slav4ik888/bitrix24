@@ -2,6 +2,7 @@ import * as f from './forms.js';
 import * as com from './company.js';
 import * as c from './company-methods-bx24.js';
 import * as cli from './contact.js';
+import * as bp from './bp.js';
 import { createNewCompanyWithContact } from '../lib/creates/create-new-company-with-contact/create-new-company-with-contact.js';
 import { startCreateGroupCompaniesWithContacts } from '../lib/creates/create-group-companies-with-contacts/create-group-companies-with-contacts.js';
 import { createContactWithPhone } from '../tests/create-contact-with-phone.js';
@@ -126,6 +127,14 @@ export default async function (e) {
     case 'crm-contact-delete':
       result = await f.contactDelete(form); break;
     
+    
+    // BUSINESS PROCESS
+      
+    case 'business-process-list':
+      result = await bp.businessProcessList(); break;
+    
+    case 'business-process-start-badcom':
+      result = await bp.businessProcessStartBC(form); break;
     
   }
 

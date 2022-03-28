@@ -15,4 +15,4 @@ hooksList.addEventListener(`click`, (e) => toggleHook(e.target));
 // Выводим список хуков
 displayListHTML(hooksContainer, hooksList, hooksListArr);
 
-// git add . && git commit -m "add testConnectContactsWithCompanies" && git push origin master
+// git add . && git commit -m "start add businessProcessStartBC" && git push origin master
